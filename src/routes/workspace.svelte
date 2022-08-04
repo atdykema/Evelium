@@ -1,41 +1,24 @@
 <script>
-    import { writable } from "svelte/store";
     import Bucket from "../components/bucket.svelte";
-    import { v4 as uuidv4 } from 'uuid';
-    import FolderTab from "../components/FolderTab.svelte"
-    import {bucketList} from '../infoStores.js'
+    import { mainList } from "../infoStores.js"
 
-    if (Object.keys($bucketList).length === 0){
-        let currId = uuidv4()
-        $bucketList[currId] = writable({})
-        bucketList.update(v => $bucketList)
-    }
-
-    //let currBucket = Object.keys($bucketList)[0]
-
-    console.log($bucketList)
-
+    
 
 </script>
 
 <div class="container">
     <div class="toolbar-left">
-        <div class="toolbar-button" id="move-toolbar-button" on:click={() => {}}>
+        <div class="toolbar-button" id="new-toolbar-button" on:click={() => {}}>
             New
         </div>
-        <div class="toolbar-button" id="resize-toolbar-button" on:click={() => {}}>
+        <div class="toolbar-button" id="open-toolbar-button" on:click={() => {}}>
             Open
         </div>
+        <a class="toolbar-button" id="save-toolbar-button">
+            Save
+        </a>
     </div>
-
-    <div class="main-container">
-        <div class="folder-nav">
-            {#each Object.keys($bucketList) as bucket}
-                <FolderTab class="folder-tab" uid={bucket}></FolderTab>
-            {/each}
-        </div>
         <Bucket></Bucket>
-    </div>
 </div>
 
 <style>

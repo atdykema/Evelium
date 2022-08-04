@@ -5,24 +5,19 @@
     import { mainList } from '../infoStores.js'
 
     let myIds = new Set()
-    let tempList = {};
-
-    const unsubscribe = mainList.subscribe(v => {
-        tempList = v
-    })
-
+    
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        tempList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
-        mainList.update(v => tempList)
+        $mainList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
+        $mainList['stories'].add(currId)
+        mainList.update(v => $mainList)
         myIds.add(currId)
         console.log(myIds)
         
         console.log(Object.values($mainList))
+        console.log($mainList['stories'])
     }
-
-
 
     function removeStaleId(id){
         myIds.delete(id)

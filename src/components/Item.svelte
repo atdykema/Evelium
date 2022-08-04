@@ -5,19 +5,17 @@
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
 
-    let tempList = $mainList
+    
     let contentCollapsed = 'auto';
 
-    const unsubscribe = mainList.subscribe(v => {
-        tempList = v
-    })
+    let editable = false;
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        tempList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
-        tempList[myId]['content'].add(currId)
-        mainList.update(v => tempList)
+        $mainList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
+        $mainList[myId]['content'].add(currId)
+        mainList.update(v => $mainList)
         console.log($mainList[myId]['content'])
         
         console.log(Object.values($mainList))
@@ -25,9 +23,9 @@
 
     function addNote(){
         let currId = uuidv4()
-        tempList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0}
+        $mainList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0}
         $mainList[myId]['content'].add(currId)
-        mainList.update(v => tempList)
+        mainList.update(v => $mainList)
         console.log(Object.values($mainList))
     }
 
@@ -46,7 +44,12 @@
             }
         }
         delete $mainList[itemId]
+        console.log()
+        if($mainList['stories'].has(itemId)){
+            $mainList['stories'].delete(itemId)
+        }
         mainList.update(v => $mainList)
+        console.log($mainList['stories'])
     }
 
     function removeStaleId(id){
@@ -68,8 +71,6 @@
         }
         console.log(contentCollapsed)
     }
-
-    onDestroy(unsubscribe)
 
 
 </script>

@@ -16,6 +16,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"buffer": "^6.0.3",
+		"cross-blob": "^3.0.1",
+		"file-system": "^1.2.9",
+		"node-blob": "^0.0.2",
+		"pdfkit": "^0.13.0",
 		"svelte-moveable": "^0.24.0",
 		"uuid": "^8.3.2"
 	}

@@ -12,15 +12,13 @@
         $mainList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
         $mainList['stories'].add(currId)
         mainList.update(v => $mainList)
-        myIds.add(currId)
-        console.log(myIds)
         
         console.log(Object.values($mainList))
         console.log($mainList['stories'])
     }
 
     function removeStaleId(id){
-        myIds.delete(id)
+        $mainList['stories'].delete(id)
         return ''
     }
 
@@ -32,7 +30,7 @@
 <div class="main-canvas-container">
     <div class="main-canvas">
         
-        {#each Array.from(myIds) as id}
+        {#each Array.from($mainList['stories']) as id}
             {#if $mainList[id] !== undefined}
                 <svelte:component this={Item} myId={$mainList[id]['id']}/>
             {:else}

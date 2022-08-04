@@ -3,8 +3,6 @@
     import { v4 as uuidv4 } from 'uuid';
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
-
-    let myIds = new Set()
     
     function addColumn(){
         let currId = uuidv4()

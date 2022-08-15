@@ -24,6 +24,9 @@
     <div class="bucket-container">
         <Bucket></Bucket>
     </div>
+    <div class="tools-container">
+
+    </div>
 </div>
 </body>
 
@@ -34,6 +37,16 @@
         flex-direction: row;
         justify-content: start;
         align-items: center;
+    }
+
+    .tools-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: red solid 1px;
+        width: 28vw;
+        height: 100%;
     }
 
     .container{

@@ -78,63 +78,64 @@
 
 
 <div class="container {$mainList[myId]['type']}" contentCollapsed={contentCollapsed} style="{$mainList[myId]['status']}">
-
-    <div class="top-item-nav">
-        <div class="collapse-button" on:click={collapseContent}>
-            {#if contentCollapsed === 'height: 0px; opacity: 0%;'}
-                &#9650
-            {:else}
-                &#9660
-            {/if}
-        </div>
-        <div class="exit-button" on:click={removeItem(myId)}>
-            X
-        </div>
-    </div>
-    <div contenteditable class="item-title">
-        {$mainList[myId]['title']}
-    </div>
-    {#if $mainList[myId]['type'] === 'column'}
-        <div class="item-content" style="{contentCollapsed}">
-            {#each Array.from($mainList[myId]['content']) as id}
-                {#if $mainList[id] !== undefined}
-                    <svelte:component this={Item} myId={$mainList[id]['id']}/>
+    <div class="item-properties">
+        <div class="top-item-nav">
+            <div class="collapse-button" on:click={collapseContent}>
+                {#if contentCollapsed === 'height: 0px; opacity: 0%;'}
+                    &#9650
                 {:else}
-                    {removeStaleId(id)}
+                    &#9660
                 {/if}
-            {/each}
-        </div>
-    {:else if $mainList[myId]['type'] === 'note'}
-        <div class="item-content" style="{contentCollapsed}">
-            <div contenteditable class="text-content">
-                {$mainList[myId]['content']}
+            </div>
+            <div class="exit-button" on:click={removeItem(myId)}>
+                X
             </div>
         </div>
-    {/if}
+        <div contenteditable class="item-title">
+            {$mainList[myId]['title']}
+        </div>
+        {#if $mainList[myId]['type'] === 'column'}
+            <div class="item-content" style="{contentCollapsed}">
+                {#each Array.from($mainList[myId]['content']) as id}
+                    {#if $mainList[id] !== undefined}
+                        <svelte:component this={Item} myId={$mainList[id]['id']}/>
+                    {:else}
+                        {removeStaleId(id)}
+                    {/if}
+                {/each}
+            </div>
+        {:else if $mainList[myId]['type'] === 'note'}
+            <div class="item-content" style="{contentCollapsed}">
+                <div contenteditable class="text-content">
+                    {$mainList[myId]['content']}
+                </div>
+            </div>
+        {/if}
 
-    {#if $mainList[myId]['type'] === 'column'}
-        <div class="item-nav" id="item-add-nav">
-            <div class="add-item-button" id="add-note-button" on:click={addNote}>
-                Note
+        {#if $mainList[myId]['type'] === 'column'}
+            <div class="item-nav" id="item-add-nav">
+                <div class="add-item-button" id="add-note-button" on:click={addNote}>
+                    Note
+                </div>
+                <div class="add-item-button" id="add-column-button" on:click={addColumn}>
+                    Column
+                </div>
             </div>
-            <div class="add-item-button" id="add-column-button" on:click={addColumn}>
-                Column
-            </div>
-        </div>
 
-    {:else if $mainList[myId]['type'] === 'note'}
-        <div class="item-nav" id="item-status-nav">
-            <div class="status-item-button" on:click={() => toStatus('background-color: lightgreen;')}>
-                Done
+        {:else if $mainList[myId]['type'] === 'note'}
+            <div class="item-nav" id="item-status-nav">
+                <div class="status-item-button" on:click={() => toStatus('background-color: lightgreen;')}>
+                    Done
+                </div>
+                <div class="status-item-button" on:click={() => toStatus('background-color: yellow;')}>
+                    working
+                </div>
+                <div class="status-item-button" on:click={() => toStatus('background-color: lightgray;')}>
+                    UnAs
+                </div>
             </div>
-            <div class="status-item-button" on:click={() => toStatus('background-color: yellow;')}>
-                working
-            </div>
-            <div class="status-item-button" on:click={() => toStatus('background-color: lightgray;')}>
-                UnAs
-            </div>
-        </div>
-    {/if}
+        {/if}
+    </div>
 
 </div>
 
@@ -146,10 +147,20 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: .5rem;
+        margin: auto 0.5rem auto 0.5rem;
+
         width: fit-content;
         min-width: 20vw;
         overflow: hidden;
+
+    }
+
+    .item-properties{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
     }
 
     .column{

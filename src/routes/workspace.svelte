@@ -6,31 +6,56 @@
 
 </script>
 
+<body>
 <div class="container">
-    <div class="toolbar-left">
-        <div class="toolbar-button" id="new-toolbar-button" on:click={() => {}}>
-            New
+    <div class="toolbar-left-container">
+        <div class="toolbar-left">
+            <div class="toolbar-button" id="new-toolbar-button" on:click={() => {}}>
+                New
+            </div>
+            <div class="toolbar-button" id="open-toolbar-button" on:click={() => {}}>
+                Open
+            </div>
+            <a class="toolbar-button" id="save-toolbar-button">
+                Save
+            </a>
         </div>
-        <div class="toolbar-button" id="open-toolbar-button" on:click={() => {}}>
-            Open
-        </div>
-        <a class="toolbar-button" id="save-toolbar-button">
-            Save
-        </a>
     </div>
+    <div class="bucket-container">
         <Bucket></Bucket>
+    </div>
 </div>
+</body>
 
 <style>
 
+    body{
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+    }
+
     .container{
         display: flex;
-        flex: row;
+        flex-direction: row;
         border: solid orange 1px;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
-        min-width: 99vw;
-        width: fit-content;
+        width: 98vw;
+        height: 96vh;
+        overflow-y: hidden;
+    }
+
+    .bucket-container{
+        display: flex;
+        flex-direction: row;
+        border: solid orange 1px;
+        justify-content: start;
+        align-items: center;
+        width: 70vw;
+        height: 96vh;
+        overflow-y: hidden;
     }
 
     .main-container{
@@ -64,7 +89,17 @@
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+        height: 100%
+
+    }
+
+    .toolbar-left-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         height: 90vh;
+        margin: 0vh 1vw 0vh 1vw;
     }
 
 </style>

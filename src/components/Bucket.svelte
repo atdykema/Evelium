@@ -52,19 +52,22 @@
         justify-content: start;
         align-items: flex-start;
         border: black solid 1px;
-        width: 100%;
+        height: 100%;
+        width: 70vw;
+        
+
     }
 
     .main-canvas{
         display: flex;
         flex-direction: row;
-        justify-content: start;
-        align-items: center;
         border: pink solid 2px;
-        min-height: 90vh;
-        max-width: fit-content;
-        width: 100%;
+        max-height: 99vh;
         padding: 1rem;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        height: 100%;
+        
     }
 
     .add-column-button{

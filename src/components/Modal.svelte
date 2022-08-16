@@ -17,8 +17,6 @@
         newItemAttrs.set(data)
         console.log($newItemAttrs)
 
-        hide()
-
 
     }
 

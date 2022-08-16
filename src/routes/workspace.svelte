@@ -1,7 +1,86 @@
 <script>
     import Bucket from "../components/bucket.svelte";
     import { mainList } from "../infoStores.js"
+    import Item from "../components/Item.svelte"
+    import Results from "../components/Results.svelte"
 
+    let currQueryResults = new Set()
+
+    $: console.log(currQueryResults);
+
+    function retrieveItemList(property, value, itemsToSearch = $mainList['stories']){
+
+        
+        let temp = itemsToSearch
+        itemsToSearch = []
+        console.log(temp)
+        for (var it = temp.values(), val= null; val=it.next().value; ) {
+            console.log(val);
+            itemsToSearch.push(val)
+        }
+
+        console.log(itemsToSearch)
+        itemsToSearch.forEach(itemId => {
+            console.log($mainList[itemId]['type'])
+            if($mainList[itemId]['type'] === 'note'){
+                console.log(property)
+                console.log($mainList[itemId])
+                console.log($mainList[itemId][property])
+                console.log($mainList[itemId][property], value)
+                if($mainList[itemId][property] === value){
+                    currQueryResults.add(itemId)
+                    currQueryResults = currQueryResults
+                    console.log('hello', currQueryResults)
+                }
+            }else{
+                let items = $mainList[itemId]['content']
+                console.log(items)
+
+                
+                let temp1 = items
+                items = []
+                for (var it = temp1.values(), val= null; val=it.next().value; ) {
+                    console.log(val);
+                    items.push(val)
+                }
+                
+
+                for(let i = 0; i < items.length; i++){
+                    console.log($mainList[items[i]])
+                    if($mainList[items[i]] !== undefined){
+                        retrieveItemList(property, value, $mainList[itemId]['content'])
+                        
+                    }
+                }
+            }
+        })
+        console.log(currQueryResults)
+    }
+
+    function OnSubmit(e){
+
+        currQueryResults = new Set()
+        
+        const formData = new FormData(e.target)
+
+        let property = formData.get('query-property')
+        let value = formData.get('query-value')
+        console.log(property)
+        console.log(value)
+        
+        /*
+        for (const field of formData.entries()){
+            const [key, val] = field
+            console.log(key, val)
+            property = key
+            value = val
+        }
+        */
+
+        retrieveItemList(property, value)
+
+
+    }
     
 
 </script>
@@ -25,7 +104,37 @@
         <Bucket></Bucket>
     </div>
     <div class="tools-container">
-
+        <div class="search-tool-container">
+            <div class="search-input">
+                <div class="container-title">New query</div>
+                <form on:submit|preventDefault={OnSubmit}>
+                    <div>
+                        <label for="query">Property</label>
+                        <input
+                            type="text"
+                            id="query-property"
+                            name="query-property"
+                            value=""
+                        />
+                    </div>
+                    <div>
+                        <label for="query">Value</label>
+                        <input
+                            type="text"
+                            id="query-value"
+                            name="query-value"
+                            value=""
+                        />
+                    </div>
+                    <button type="submit">Query</button>
+                </form>
+            </div>
+            <div class="search-output">
+                {#key currQueryResults}
+                    <Results results={currQueryResults}></Results>
+                {/key}
+            </div>
+        </div>
     </div>
 </div>
 </body>
@@ -39,11 +148,37 @@
         align-items: center;
     }
 
-    .tools-container{
+    .search-tool-container{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        border: black 1px solid;
+    }
+
+    .search-input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: purple 1px solid;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .search-output{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: red 1px solid;
+    }
+
+    .tools-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
         border: red solid 1px;
         width: 28vw;
         height: 100%;

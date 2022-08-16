@@ -11,6 +11,7 @@
         $mainList['stories'].add(currId)
         mainList.update(v => $mainList)
         
+        console.log(Object.keys($mainList))
         console.log(Object.values($mainList))
         console.log($mainList['stories'])
     }

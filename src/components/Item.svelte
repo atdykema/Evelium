@@ -8,8 +8,6 @@
     
     let contentCollapsed = 'auto';
 
-    let editable = false;
-
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
@@ -19,6 +17,7 @@
         console.log($mainList[myId]['content'])
         
         console.log(Object.values($mainList))
+        console.log($mainList['stories'])
     }
 
     function addNote(){

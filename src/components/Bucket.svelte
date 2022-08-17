@@ -1,9 +1,19 @@
+<script context='module'>
+    export function scrollIntoView({ target }) {
+        console.log(target)
+        const el = document.querySelector(target.getAttribute('guid'));
+        if (!el) return;
+        el.scrollIntoView({behavior: "smooth", inline: "center"});
+    }
+    
+</script>
+
 <script>
 
     import { v4 as uuidv4 } from 'uuid';
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
-    
+
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
@@ -66,6 +76,7 @@
         padding: 1rem;
         overflow-y: scroll;
         height: 100%;
+        min-width: 65vw;
         
     }
 

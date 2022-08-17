@@ -5,13 +5,14 @@
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
 
+    import { scrollIntoView } from '../components/Bucket.svelte'
     
     let contentCollapsed = 'auto';
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
+        $mainList[currId] = {id:currId, type:'column', title:'New column', content:new Set(), type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000)}
         $mainList[myId]['content'].add(currId)
         mainList.update(v => $mainList)
         console.log($mainList[myId]['content'])
@@ -22,7 +23,7 @@
 
     function addNote(){
         let currId = uuidv4()
-        $mainList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0}
+        $mainList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000)}
         $mainList[myId]['content'].add(currId)
         mainList.update(v => $mainList)
         console.log(Object.values($mainList))
@@ -76,7 +77,7 @@
 
 
 
-<div class="container {$mainList[myId]['type']}" contentCollapsed={contentCollapsed} style="{$mainList[myId]['status']}">
+<div class="container {$mainList[myId]['type']}" id="{$mainList[myId]['id']}" guid={$mainList[myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList[myId]['status']}">
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>

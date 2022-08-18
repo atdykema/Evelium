@@ -1,10 +1,26 @@
 <script>
 
+    import { initializeApp } from "firebase/app";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAZsDMhpjMEU3Fa1B4pQ-niBVK3hF0_XA4",
+        authDomain: "tasktic-1e312.firebaseapp.com",
+        projectId: "tasktic-1e312",
+        storageBucket: "tasktic-1e312.appspot.com",
+        messagingSenderId: "494927387002",
+        appId: "1:494927387002:web:126cc88b52ea2b6e521ec3",
+        measurementId: "G-V2TFJNP6X8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
 
     import Button from "../components/Button.svelte";
     import Card from "../components/Card.svelte";
-
-    import {fade} from 'svelte/transition';
 
     let infoCurrTab = 1
 
@@ -18,6 +34,48 @@
         formCurrTab = index
     }
 
+    function googleLogin(){
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
+
+        //redirect to projects/workspace
+    }
+    /*
+    function OnSubmit(e){
+
+        const formData = new FormData(e.target)
+        let items = {}
+        for (const field of formData.entries()){
+            const [key, val] = field
+            console.log(key, val)
+            items[key] = val
+        }
+
+        console.log(items)
+
+        //add to firebase
+
+
+
+        }
+    */
+
 </script>
 
 
@@ -28,19 +86,21 @@
             <img class="main-icon" src="../resume-site-icon2.svg" alt="Mobilfolio">
         </div>
         <div class="main-title">
-            Moblifolio
+            Tasktic
         </div>
         <div class="main-nav">
-            <Button href="#form" text="Signup or login"></Button>
-            <Button href="#information" text="What is MolbFo?"></Button>
+            <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
+            <Button href="#information" text="What is Tasktic?"></Button>
             <Button href="/" text="Docs"></Button>
         </div>
     </div>
-
+    <!--
     <div class="main-information" id="form">
 
         <div class="content-title"> Lets get started!</div>
 
+
+        
         <div class="main-info-container">
             <div class="info-nav">
                 <div class="tab" id="form-tab-1" on:click={() => formTabClick(1)}>  
@@ -53,11 +113,11 @@
             <Card bind:formCurrTab={formCurrTab}>
                 {#if formCurrTab === 2}
                 <div class="form-container">
-                    <form class="curr-form" action="/signup" method="POST">
+                    <form class="curr-form" on:submit={OnSubmit}>
                         <div class="form-obj" id="user_login_email">
                             <label class="user_login_email_caption">
                                 Email: 
-                                <input class="login_input" id="login_input_email" name="email" placeholder="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$" required/>
+                                <input class="login_input" id="login_input_email" name="email" placeholder="email" required/>
                             </label>
                         </div>
                         <div class="form-obj" id="user_login_password">
@@ -102,6 +162,7 @@
         </div>
         
     </div>
+    -->
 
     <div class="main-information" id="information">
 
@@ -327,6 +388,28 @@
         margin: 2rem;
 
         text-align: center;
+    }
+
+    .google-login-button{
+        border: 3px solid purple;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        margin: .5rem;
+        font-size: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        transition: .3s;
+        width: 80%;
+    }
+
+    .google-login-button:hover{
+        color: slategray;
+        background-color: blueviolet;
     }
 
 

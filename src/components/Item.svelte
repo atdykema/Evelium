@@ -1,5 +1,4 @@
 <script>
-    import { onDestroy } from 'svelte';
     import { v4 as uuidv4 } from 'uuid';
     export let myId
     import Item from "../components/Item.svelte";

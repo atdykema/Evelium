@@ -1,80 +1,12 @@
 <script>
-
-    import { initializeApp } from "firebase/app";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAZsDMhpjMEU3Fa1B4pQ-niBVK3hF0_XA4",
-        authDomain: "tasktic-1e312.firebaseapp.com",
-        projectId: "tasktic-1e312",
-        storageBucket: "tasktic-1e312.appspot.com",
-        messagingSenderId: "494927387002",
-        appId: "1:494927387002:web:126cc88b52ea2b6e521ec3",
-        measurementId: "G-V2TFJNP6X8"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-
-
     import Button from "../components/Button.svelte";
     import Card from "../components/Card.svelte";
-
+    import {googleLogin} from "../firebase"
     let infoCurrTab = 1
 
     function infoTabClick(index){
         infoCurrTab = index
     }
-
-    let formCurrTab = 1
-
-    function formTabClick(index){
-        formCurrTab = index
-    }
-
-    function googleLogin(){
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-
-        //redirect to projects/workspace
-    }
-    /*
-    function OnSubmit(e){
-
-        const formData = new FormData(e.target)
-        let items = {}
-        for (const field of formData.entries()){
-            const [key, val] = field
-            console.log(key, val)
-            items[key] = val
-        }
-
-        console.log(items)
-
-        //add to firebase
-
-
-
-        }
-    */
 
 </script>
 
@@ -94,75 +26,6 @@
             <Button href="/" text="Docs"></Button>
         </div>
     </div>
-    <!--
-    <div class="main-information" id="form">
-
-        <div class="content-title"> Lets get started!</div>
-
-
-        
-        <div class="main-info-container">
-            <div class="info-nav">
-                <div class="tab" id="form-tab-1" on:click={() => formTabClick(1)}>  
-                    Login
-                </div>
-                <div class="tab" id="form-tab-2" on:click={() => formTabClick(2)}>  
-                    Sign up
-                </div>
-            </div>
-            <Card bind:formCurrTab={formCurrTab}>
-                {#if formCurrTab === 2}
-                <div class="form-container">
-                    <form class="curr-form" on:submit={OnSubmit}>
-                        <div class="form-obj" id="user_login_email">
-                            <label class="user_login_email_caption">
-                                Email: 
-                                <input class="login_input" id="login_input_email" name="email" placeholder="email" required/>
-                            </label>
-                        </div>
-                        <div class="form-obj" id="user_login_password">
-                            <label class="user_login_password_caption">
-                                Password:
-                                <input class="login_input" id="login_input_password" name="password" placeholder="password" required/>
-                            </label>
-                        </div>
-                        <div class="form-obj" id="user_login_password">
-                            <label class="user_login_password_caption">
-                                Retype Password:
-                                <input class="login_input" id="login_input_password" name="re_password" placeholder="password" required/>
-                            </label>
-                        </div>
-                        <div class="form-obj">
-                            <button class="user_signup_button" type="submit">Lets Go!</button>
-                        </div>
-                    </form>
-                </div>
-                {:else}
-                <div class="form-container">
-                    <form class="curr-form" action="/login" method="POST">
-                        <div class="form-obj" id="user_login_email">
-                            <label class="user_login_email_caption">
-                                Email:
-                                <input class="login_input" id="login_input_email" name="email" placeholder="email"/> 
-                            </label>
-                        </div>
-                        <div class="form-obj" id="user_login_password">
-                            <label class="user_login_password_caption">
-                                Password:
-                                <input class="login_input" id="login_input_password" name="password" placeholder="password"/>
-                            </label>
-                        </div>
-                        <div class="form-obj">
-                            <button class="user_login_button" type="submit">Lets Go!</button>
-                        </div>
-                    </form>
-                </div>
-                {/if}
-            </Card>
-        </div>
-        
-    </div>
-    -->
 
     <div class="main-information" id="information">
 
@@ -344,28 +207,6 @@
         color: slategray;
         background-color: blueviolet;
         width: 90%;
-    }
-
-    .form-container{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    .curr-form{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: .5rem;
-
-    }
-
-    .form-obj{
-        margin: .25rem;
-        font-size: 3rem;
     }
 
     .main-info-container{

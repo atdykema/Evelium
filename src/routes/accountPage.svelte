@@ -5,11 +5,16 @@ import {db} from "../firebase"
 import {session} from "../infoStores"
 import { get } from "svelte/store";
 import {onMount} from 'svelte'
+import { goto } from "$app/navigation"
+
 
 let isMounted;
 let projects = [];
 
 onMount(async () => {
+        if(get(session)['user'] == null){
+            await goto('/')
+        }
         try {
             await getProjects()         
             isMounted = true
@@ -36,6 +41,11 @@ async function getProjects(){
 <div class="main-container">
 
     <div class="main-content">
+        {#if get(session)['user']}
+        <div>
+            Hi {get(session)['user']['email']}
+        </div>
+        {/if}
         <div>Projects</div>
         <div class="project-list">
             {#if isMounted}
@@ -85,7 +95,6 @@ async function getProjects(){
         align-items: center;
         width: 100%;
         height: 98vh;
-        margin-bottom: 10vh;
     }
 
     .project-list{

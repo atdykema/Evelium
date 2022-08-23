@@ -160,13 +160,14 @@
 
 <style>
 
-    :global(html){
+:global(html){
         display: flex;
         height: 100%;
         width: 100%;
         scroll-behavior: smooth;
         justify-content: center;
         align-items: center;
+        margin: 0;
     }
     :global(body){
         display: flex;
@@ -186,6 +187,7 @@
     :global(body > div) {
         width: 100%;
         height: 100%;
+        margin: 0;
     }
 
     .wrapper{

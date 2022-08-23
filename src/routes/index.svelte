@@ -2,6 +2,9 @@
     import Button from "../components/Button.svelte";
     import Card from "../components/Card.svelte";
     import {googleLogin} from "../firebase"
+    import {session} from "../infoStores"
+    import {get} from 'svelte/store'
+
     let infoCurrTab = 1
 
     function infoTabClick(index){
@@ -14,6 +17,11 @@
 <div class="main-container">
 
     <div class="main-content">
+        {#if get(session)['user'] != null}
+        <div>
+            Hi {get(session)['user']['email']}
+        </div>
+        {/if}
         <div class="main-icon-container">
             <img class="main-icon" src="../resume-site-icon2.svg" alt="Mobilfolio">
         </div>

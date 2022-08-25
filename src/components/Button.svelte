@@ -10,7 +10,6 @@
 <style>
 
     .container{
-        border: 3px solid purple;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -24,11 +23,13 @@
         color: black;
         transition: .3s;
         width: 80%;
+        color: #faf9f5;
     }
 
     .container:hover{
-        color: slategray;
-        background-color: blueviolet;
+        color: black;
+        background-color: #faf9f5;
+        opacity: 50%;
     }
 
 </style>

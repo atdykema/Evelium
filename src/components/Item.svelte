@@ -18,6 +18,7 @@
         
         console.log(Object.values($mainList))
         console.log($mainList['stories'])
+        console.log($mainList)
     }
 
     function addNote(){

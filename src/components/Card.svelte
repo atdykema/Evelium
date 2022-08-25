@@ -16,14 +16,15 @@
 <style>
 
     .container{
+        color: #0d0019;
         display: flex;
         flex-direction: column;
         text-align: center;
-        border: 1px red solid;
+        border: 5px #f1dfff solid;
         border-radius: 20px;
         margin: 2rem;
         padding: 2rem;
-        background-color: bisque;
+        background-color: #be82ff;
         width: 50%;
     }
 

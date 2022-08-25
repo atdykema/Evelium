@@ -13,24 +13,21 @@
 
 </script>
 
-
+<svelte:head><style>html{
+    overflow: auto;
+}</style></svelte:head>
 <div class="main-container">
 
     <div class="main-content">
-        {#if get(session)['user'] != null}
-        <div>
-            Hi {get(session)['user']['email']}
-        </div>
-        {/if}
         <div class="main-icon-container">
-            <img class="main-icon" src="../resume-site-icon2.svg" alt="Mobilfolio">
+            <img class="main-icon" src="../resume-site-icon2.svg" alt="Evelium">
         </div>
-        <div class="main-title">
-            Tasktic
-        </div>
+            <div class="main-title">
+                Evelium
+            </div>
         <div class="main-nav">
             <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
-            <Button href="#information" text="What is Tasktic?"></Button>
+            <Button href="#information" text="What is Evelium?"></Button>
             <Button href="/" text="Docs"></Button>
         </div>
     </div>
@@ -61,23 +58,23 @@
             <Card bind:infoCurrTab={infoCurrTab}>
                 {#if infoCurrTab === 2}
                     
-                    button2button2button2button2button2button2button2button2button2button2button2
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum venenatis augue, at maximus ipsum sollicitudin sed. Aenean in erat magna. Vestibulum sit amet tincidunt lectus. Phasellus suscipit, massa vitae consectetur congue, felis lacus interdum elit, id varius tortor dolor sed quam. In volutpat sit amet nulla at pellentesque.
     
                 {:else if infoCurrTab === 3}
     
-                    button3
+                Duis rhoncus a nisi non suscipit. Integer lacus magna, tincidunt vel urna sit amet, euismod pulvinar est. Duis hendrerit, massa eu scelerisque condimentum, justo dolor pretium purus, sed maximus nisi ipsum condimentum magna.
     
                 {:else if infoCurrTab === 4}
     
-                    button4
+                Proin iaculis sed orci eget pulvinar. Ut in tempus quam. Integer et leo felis.  
     
                 {:else if infoCurrTab === 5}
     
-                    button5
+                Duis pretium tortor ut nisi sollicitudin, nec feugiat diam imperdiet. Donec a risus auctor, iaculis libero vel, pretium tellus. 
     
                 {:else}
     
-                    button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1button1
+                Maecenas vel aliquam tellus, ac dictum odio. Duis facilisis, nisl non commodo semper, nisl lectus blandit orci, at bibendum magna enim ac sem.
     
     
                 {/if}
@@ -112,10 +109,13 @@
         scrollbar-width: none;  /* Firefox */
         font-size: 62.5%;
         font-family: Arial, Helvetica, sans-serif;
+        color: #faf9f5;
     }
 
+    
+
     .main-container{
-        border: 1px solid yellowgreen;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -124,7 +124,7 @@
     }
 
     .main-content{
-        border: 1px solid red;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -135,13 +135,11 @@
     }
 
     .main-icon-container{
-        border: 1px solid blue;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 1rem;
-        padding: 1rem;
     }
 
     .main-icon{
@@ -150,7 +148,7 @@
     }
 
     .main-title{
-        border: 1px solid salmon;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -162,7 +160,7 @@
     }
 
     .main-nav{
-        border: 1px solid black;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -174,7 +172,7 @@
     }
 
     .main-information{
-        border: blue solid 1px;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
 
         flex-direction: column;
@@ -185,7 +183,7 @@
     }
 
     .info-nav{
-        border: 1px solid black;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         margin-top: 2rem;
@@ -195,7 +193,7 @@
     }
 
     .tab{
-        border: 3px solid purple;
+        border: 1px solid white;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -206,19 +204,17 @@
         font-size: 2rem;
         text-align: center;
         text-decoration: none;
-        color: black;
+        color:#faf9f5;
         transition: .3s;
         width: 80%;
     }
 
     .tab:hover{
-        color: slategray;
-        background-color: blueviolet;
         width: 90%;
     }
 
     .main-info-container{
-        border: black 1px solid;
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -229,6 +225,7 @@
     }
 
     .content-title{
+        /*border: 1px solid yellowgreen;*/
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -240,7 +237,7 @@
     }
 
     .google-login-button{
-        border: 3px solid purple;
+       /*border: 1px solid yellowgreen;*/
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -251,14 +248,32 @@
         font-size: 2rem;
         text-align: center;
         text-decoration: none;
-        color: black;
+        color: #faf9f5;
         transition: .3s;
         width: 80%;
     }
 
     .google-login-button:hover{
-        color: slategray;
-        background-color: blueviolet;
+        color: black;
+        background-color: #faf9f5;
+        opacity: 50%;
+    }
+
+    #info-tab-1{
+        background-color: #f1dfff;
+    }
+
+    #info-tab-2{
+        background-color: #e2bfff;
+    }
+    #info-tab-3{
+        background-color: #d1a1ff;
+    }
+    #info-tab-4{
+        background-color: #be82ff;
+    }
+    #info-tab-5{
+        background-color: #a762fe;
     }
 
 

@@ -5,6 +5,7 @@
     import Results from "../components/Results.svelte"
     import { Datepicker } from 'svelte-calendar';
 
+    console.log($mainList)
     let currQueryResults = new Set()
 
     let toolsCollapse = 'width 25vw; display: flex;'
@@ -94,6 +95,11 @@
     
 
 </script>
+<svelte:head><style>
+    .top-navbar{
+        position: relative;
+    }
+</style></svelte:head>
 <div class="wrapper">
 <div class="container">
     <div class="toolbar-left-container">
@@ -160,35 +166,6 @@
 
 <style>
 
-:global(html){
-        display: flex;
-        height: 100%;
-        width: 100%;
-        scroll-behavior: smooth;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-    }
-    :global(body){
-        display: flex;
-        min-height: 100%;
-        min-width: 100%;
-        margin: 0;
-        scroll-behavior: smooth;
-
-        justify-content: center;
-        align-items: center;
-    }
-
-    :global(div){
-        scroll-behavior: smooth
-    }
-
-    :global(body > div) {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-    }
 
     .wrapper{
         display: flex;
@@ -196,7 +173,8 @@
         justify-content: start;
         align-items: center;
         margin: 0;
-        height: 100%;
+        max-height: 100%;
+        height: 98%;
         
     }
 
@@ -297,7 +275,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        height: 90vh;
+        height: 100%;
         margin: 0vh 1vw 0vh 1vw;
     }
 

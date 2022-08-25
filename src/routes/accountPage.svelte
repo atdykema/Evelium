@@ -1,66 +1,89 @@
 <script>
-import { googleLogOut } from "../firebase";
 import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
 import {db} from "../firebase"
-import {session} from "../infoStores"
-import { get } from "svelte/store";
+import {session, mainList} from "../infoStores"
 import {onMount} from 'svelte'
-import { goto } from "$app/navigation"
+import {googleLogin} from "../firebase"
 
 
-let isMounted;
+let isMounted = 0;
 let projects = [];
+let currProject = null
+
 
 onMount(async () => {
-        if(get(session)['user'] == null){
-            await goto('/')
+        await new Promise(r => setTimeout(r, 1000));
+        if($session['user'] != null){
+            try {
+                await getProjects()
+                isMounted = 1
+                
+            }catch(error) {
+                console.error(error)
+            }
+        }else{
+            isMounted = 2
         }
-        try {
-            await getProjects()         
-            isMounted = true
-        }catch(error) {
-            console.error(error)
-        }
+        
     })
 
-async function getProjects(){
-    let userRef = doc(db, 'users', get(session)['user']['uid'])
-    console.log(get(session)['user']['uid'])
-    let temp = collection(userRef, 'userProjects')
-    let collSnap = await getDocs(temp)
-    collSnap.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-        projects.push(doc.data())
-    });
+    async function getProjects(){
+        let userRef = doc(db, 'users', $session['user']['uid'])
+        console.log($session['user']['uid'])
+        let temp = collection(userRef, 'userProjects')
+        let collSnap = await getDocs(temp)
+        collSnap.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            projects.push(doc.data())
+        });
+    }
 
-}
+    async function getProject(project){
+        let newList = {}
+        newList['stories'] = new Set(project['projectData']['projectStories'])
+        console.log(newList['stories'])
+        project['projectData']['projectItems'].forEach(element => {
+            let currItem = {}
+            currItem['content'] = new Set(element['content'])
+            currItem['id'] = element['id']
+            currItem['title'] = element['title']
+            currItem['type'] = element['type']
+            newList[currItem['id']] = currItem
+        });
+        mainList.set(newList)
+    }
+
+
     
 </script>
 
 <div class="main-container">
-
     <div class="main-content">
-        {#if get(session)['user']}
+    {#if isMounted == 1}
         <div>
-            Hi {get(session)['user']['email']}
+            Hi {$session['user']['email']}
         </div>
-        {/if}
-        <div>Projects</div>
+        <div class="content-title">Projects</div>
         <div class="project-list">
             {#if isMounted}
                 {#each projects as project}
-                    <div>
+                    <div class="project-item" on:click={() => getProject(project)}>
                         {project['projectName']}
+                        {#if currProject != null}
+                            {currProject.data()}
+                        {/if}
                     </div>
                 {/each}
             {:else}
                 Loading
             {/if}
         </div>
-        <div class="logout-button" on:click={googleLogOut}>
-            logout
-        </div>
+    {:else if isMounted == 2}
+        <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
+    {:else}
+        Loading
+    {/if}
     </div>
 </div>
 
@@ -71,6 +94,7 @@ async function getProjects(){
         display: none;
     }
 
+
     *{
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
@@ -79,7 +103,16 @@ async function getProjects(){
     }
 
     .main-container{
-        border: 1px solid yellowgreen;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        
+    }
+
+    .main-content{
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -87,14 +120,12 @@ async function getProjects(){
         width: 100%;
     }
 
-    .main-content{
-        border: 1px solid red;
+    .content-title{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height: 98vh;
+        font-size: 5rem;
     }
 
     .project-list{
@@ -103,5 +134,23 @@ async function getProjects(){
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+    }
+
+    .google-login-button{
+        border: 3px solid purple;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        margin: .5rem;
+        font-size: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: black;
+        transition: .3s;
+        width: 80%;
     }
 </style>

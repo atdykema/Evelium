@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore'
 import { goto } from "$app/navigation"
-import { session } from "./infoStores"
+import { mainList, session } from "./infoStores"
 import {get} from "svelte/store"
 
 
@@ -35,11 +35,13 @@ export async function googleLogin(){
         });
 
     //redirect to projects/workspace
+    await goto('/')
     await goto('/accountPage')
 }
 
 export async function googleLogOut(){
     session.set({user: null})
+    mainList.set({stories:new Set()})
     console.log(get(session))
     await signOut(auth)
     //redirect to projects/workspace

@@ -20,7 +20,7 @@
         $mainList[currId] = {id:currId, title:'New column', content:new Set(), type:'column'}
         $mainList['stories'].add(currId)
         mainList.update(v => $mainList)
-        
+
         console.log(Object.keys($mainList))
         console.log(Object.values($mainList))
         console.log($mainList['stories'])
@@ -38,7 +38,6 @@
 
 <div class="main-canvas-container">
     <div class="main-canvas">
-        
         {#each Array.from($mainList['stories']) as id}
             {#if $mainList[id] !== undefined}
                 <svelte:component this={Item} myId={$mainList[id]['id']}/>
@@ -62,21 +61,19 @@
         flex-direction: column;
         justify-content: start;
         align-items: flex-start;
-        border: black solid 1px;
+        /*border: orange 1px solid;*/
         height: 100%;
-        
-
     }
 
     .main-canvas{
         display: flex;
         flex-direction: row;
-        border: pink solid 2px;
+        /*border: orange 1px solid;*/
         max-height: 99vh;
         padding: 1rem;
         overflow-y: scroll;
         height: 100%;
-        min-width: 65vw;
+        min-width: 100vw;
         
     }
 
@@ -85,7 +82,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border: gray solid 1px;
+        
         margin: 1rem;
         min-height: 80vh;
     }

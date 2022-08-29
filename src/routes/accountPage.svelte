@@ -1,9 +1,10 @@
 <script>
 import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
 import {db} from "../firebase"
-import {session, mainList} from "../infoStores"
+import {session} from "../infoStores"
 import {onMount} from 'svelte'
 import {googleLogin} from "../firebase"
+import Workspace from '../components/Workspace.svelte'
 
 
 let isMounted = 0;
@@ -39,10 +40,10 @@ onMount(async () => {
         });
     }
 
-    async function getProject(project){
+    function getProject(project){
         let newList = {}
         newList['stories'] = new Set(project['projectData']['projectStories'])
-        console.log(newList['stories'])
+        
         project['projectData']['projectItems'].forEach(element => {
             let currItem = {}
             currItem['content'] = new Set(element['content'])
@@ -51,13 +52,15 @@ onMount(async () => {
             currItem['type'] = element['type']
             newList[currItem['id']] = currItem
         });
-        mainList.set(newList)
+        console.log(newList)
+        return newList
     }
 
 
     
 </script>
 
+{#if currProject == null}
 <div class="main-container">
     <div class="main-content">
     {#if isMounted == 1}
@@ -68,7 +71,9 @@ onMount(async () => {
         <div class="project-list">
             {#if isMounted}
                 {#each projects as project}
-                    <div class="project-item" on:click={() => getProject(project)}>
+                    <div class="project-item" on:click={() => {
+                        currProject = project;
+                    }}>
                         {project['projectName']}
                         {#if currProject != null}
                             {currProject.data()}
@@ -86,6 +91,10 @@ onMount(async () => {
     {/if}
     </div>
 </div>
+{:else}
+    <Workspace paramList={getProject(currProject)}></Workspace>
+{/if}
+
 
 
 

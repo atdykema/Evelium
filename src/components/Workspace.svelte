@@ -1,11 +1,14 @@
 <script>
-    import Bucket from "../components/bucket.svelte";
-    import { mainList } from "../infoStores.js"
-    import Item from "../components/Item.svelte"
-    import Results from "../components/Results.svelte"
-    import { Datepicker } from 'svelte-calendar';
+    import Bucket from "./bucket.svelte";
+    import Results from "./Results.svelte"
+    import {onMount} from 'svelte'
+    import {mainList} from '../infoStores'
+    export let paramList
+
+    mainList.set(paramList)
 
     console.log($mainList)
+
     let currQueryResults = new Set()
 
     let toolsCollapse = 'width 25vw; display: flex;'
@@ -16,12 +19,9 @@
         }else{
             toolsCollapse = 'width: 0px; display: none;'
         }
-        console.log(toolsCollapse)
     }
 
     function retrieveItemList(property, value, itemsToSearch = $mainList['stories']){
-
-        
         let temp = itemsToSearch
         itemsToSearch = []
         console.log(temp)
@@ -34,10 +34,12 @@
         itemsToSearch.forEach(itemId => {
             console.log($mainList[itemId]['type'])
             if($mainList[itemId]['type'] === 'note'){
+                /*
                 console.log(property)
                 console.log($mainList[itemId])
                 console.log($mainList[itemId][property])
                 console.log($mainList[itemId][property], value)
+                */
                 if($mainList[itemId][property] === value){
                     currQueryResults.add(itemId)
                     currQueryResults = currQueryResults
@@ -95,11 +97,7 @@
     
 
 </script>
-<svelte:head><style>
-    .top-navbar{
-        position: relative;
-    }
-</style></svelte:head>
+<svelte:head></svelte:head>
 <div class="wrapper">
 <div class="container">
     <div class="toolbar-left-container">

@@ -14,6 +14,8 @@
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
 
+    console.log($mainList)
+
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
@@ -63,6 +65,10 @@
         align-items: flex-start;
         /*border: orange 1px solid;*/
         height: 100%;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
     }
 
     .main-canvas{

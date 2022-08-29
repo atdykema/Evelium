@@ -28,7 +28,6 @@
         background: url('/index-waves-full.svg') no-repeat center center fixed; 
         background-size: cover;
         overflow-x: hidden;
-        overflow-y: hidden;
         scroll-behavior: smooth;
     }
     body{
@@ -52,16 +51,13 @@
         {#if $session['user']}
             <img class="profile-pic" src={$session['user']['photoURL']} alt="User">
         {:else}
-        <div class="dropdown-button">No user</div>
+            <div class="dropdown-button">No user</div>
         {/if}
         </div>
         <div class="dropdown-menu">
-            <a class="dropdown-item" rel="external" href="/workspace">
-                Workspace
-            </a>
             <a class="dropdown-item" rel="external" href="/accountPage">
                 Account page
-            </a>
+            </a>    
             {#if $session['user'] == null}
             <div class="dropdown-item" on:click={googleLogin}>
                 Log in
@@ -79,22 +75,32 @@
 
 <style>
 
+*{
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        font-size: 62.5%;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #faf9f5;
+    }
+
     .top-navbar{
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0rem;
-        position: relative;
+        padding: 5vh 5vh 5vh 5vh;
+        position: fixed;
         opacity: 0%;
         transition: 1s;
         height: 2vh;
+        width: 95vw;
+        z-index: 99999;
     }
 
     .top-navbar:hover{
         opacity: 100%;
         height: 3vh;
         transition: .25s;
-        padding: 3vh;
+        
     }
 
     .main-nav-icon{
@@ -110,34 +116,54 @@
 
     .dropdown-menu{
         position: absolute;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.1);
-        padding: .5rem;
         font-size: 1.5rem;
-        display: none;
+        display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
-        transform: translateX(-175px);
-        padding-right: 100px;
-        
+        transform: translateX(-30%) translateY(20%);
+        opacity: 0%;
+        height: 0px;
+        transition: 1s;
+        padding: .5rem;
+        visibility: collapse;
+        overflow: hidden;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
+        border: #faf9f5 5px solid;
 
+    }
+
+    .dropdown:hover .dropdown-menu{    
+        visibility: visible;
+        transition: .5s;
+        height: 150px;
+        opacity: 100%;
     }
 
     .dropdown-button{
         padding: 10px;
-        padding-right: 50px;
+        padding-right: 12.5vw;
         z-index: 100;
-    }
-
-
-    .dropdown:hover .dropdown-menu{    
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        color: #0d0019;
     }
 
     .dropdown-item{
         margin: 5px;
+        text-align: center;
+        text-decoration: none;
+        color: #0d0019;
+        border: rgba(0, 0, 0, 0) 5px solid;
+        transition: 1s;
+        padding: .25rem;
+    }
+
+    .dropdown-item:hover{
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
+        border: #faf9f5 5px solid;
     }
 
     .dropdown-button-container{

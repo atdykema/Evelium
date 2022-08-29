@@ -13,9 +13,6 @@
 
 </script>
 
-<svelte:head><style>html{
-    overflow: auto;
-}</style></svelte:head>
 <div class="main-container">
 
     <div class="main-content">
@@ -26,9 +23,9 @@
                 Evelium
             </div>
         <div class="main-nav">
-            <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
-            <Button href="#information" text="What is Evelium?"></Button>
-            <Button href="/" text="Docs"></Button>
+            <div class="title-button" on:click={googleLogin}>Signin with Google</div>
+            <a class="title-button" href="#information">What is Evelium?</a>
+            <a class="title-button" href="/">Docs</a>
         </div>
     </div>
 
@@ -39,19 +36,19 @@
         <div class="main-info-container">
             <div class="info-nav">
                 <div class="tab" id="info-tab-1" on:mouseover={() => infoTabClick(1)} on:focus={() => infoTabClick(1)}>  
-                    tab
+                    Thing1
                 </div>
                 <div class="tab" id="info-tab-2" on:mouseover={() => infoTabClick(2)} on:focus={() => infoTabClick(2)}>  
-                    tab
+                    Thing2
                 </div>
                 <div class="tab" id="info-tab-3" on:mouseover={() => infoTabClick(3)} on:focus={() => infoTabClick(3)}>  
-                    tab
+                    Thing3
                 </div>
                 <div class="tab" id="info-tab-4" on:mouseover={() => infoTabClick(4)} on:focus={() => infoTabClick(4)}>  
-                    tab
+                    Thing4
                 </div>
                 <div class="tab" id="info-tab-5" on:mouseover={() => infoTabClick(5)} on:focus={() => infoTabClick(5)}>  
-                    tab
+                    Thing5
                 </div>
 
             </div>
@@ -193,8 +190,6 @@
     }
 
     .tab{
-        border: 1px solid white;
-        border-radius: 10px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -207,10 +202,16 @@
         color:#faf9f5;
         transition: .3s;
         width: 80%;
+        border: rgba(0, 0, 0, 0) 5px solid;
+        border-radius: 20px;
     }
 
     .tab:hover{
         width: 90%;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
+        border: #faf9f5 5px solid;
     }
 
     .main-info-container{
@@ -221,7 +222,7 @@
         align-items: center;
         width: 100%;
         margin: 1rem;
-
+        max-height: 60vh;
     }
 
     .content-title{
@@ -236,8 +237,7 @@
         text-align: center;
     }
 
-    .google-login-button{
-       /*border: 1px solid yellowgreen;*/
+    .title-button{
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -248,32 +248,18 @@
         font-size: 2rem;
         text-align: center;
         text-decoration: none;
-        color: #faf9f5;
         transition: .3s;
         width: 80%;
+        color: #faf9f5;
+        border: rgba(0,0,0,0) 5px solid;
     }
 
-    .google-login-button:hover{
-        color: black;
-        background-color: #faf9f5;
-        opacity: 50%;
-    }
-
-    #info-tab-1{
-        background-color: #f1dfff;
-    }
-
-    #info-tab-2{
-        background-color: #e2bfff;
-    }
-    #info-tab-3{
-        background-color: #d1a1ff;
-    }
-    #info-tab-4{
-        background-color: #be82ff;
-    }
-    #info-tab-5{
-        background-color: #a762fe;
+    .title-button:hover{
+        
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+        border: #faf9f5 5px solid;
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
     }
 
 
@@ -292,6 +278,10 @@
 
         .main-information{
             flex-direction: column;
+        }
+
+        .main-info-container{
+            max-height: none
         }
 
 

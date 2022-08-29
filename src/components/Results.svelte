@@ -7,7 +7,6 @@
     import { mainList } from '../infoStores'
     import Item from "./Item.svelte";
     import { scrollIntoView} from '../components/Bucket.svelte'
-    console.log('results', results)
     
 </script>
 

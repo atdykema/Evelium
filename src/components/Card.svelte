@@ -20,12 +20,18 @@
         display: flex;
         flex-direction: column;
         text-align: center;
-        border: 5px #f1dfff solid;
-        border-radius: 20px;
         margin: 2rem;
         padding: 2rem;
-        background-color: #be82ff;
         width: 50%;
+        box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(5px);
+        border: #faf9f5 5px solid;
+        color:#faf9f5;
+        max-height: 50vh;
+        overflow-y: scroll;
+        
     }
 
     .body{

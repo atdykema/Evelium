@@ -92,7 +92,7 @@ onMount(async () => {
     </div>
 </div>
 {:else}
-    <Workspace paramList={getProject(currProject)}></Workspace>
+    <Workspace paramList={getProject(currProject)} projectId={currProject['projectId']}></Workspace>
 {/if}
 
 

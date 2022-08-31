@@ -13,8 +13,7 @@
     import { v4 as uuidv4 } from 'uuid';
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
-
-    console.log($mainList)
+    
 
     function addColumn(){
         let currId = uuidv4()

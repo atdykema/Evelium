@@ -2,8 +2,9 @@
     import Bucket from "./bucket.svelte";
     import Results from "./Results.svelte"
     import {onMount} from 'svelte'
-    import {mainList} from '../infoStores'
-    export let paramList
+    import {mainList, session} from '../infoStores'
+    import {db} from '../firebase'
+    export let paramList, projectId
 
     mainList.set(paramList)
 
@@ -70,6 +71,23 @@
         console.log(currQueryResults)
     }
 
+    async function saveProject(list){
+        console.log(list['stories'])
+        temp = Array.from(list['stories'])
+        delete list['stories']
+        console.log(temp)
+        /*
+        Object.keys(list).forEach((item) => {
+            list[item]['']
+        })
+        */
+        await setDoc(doc(db, "users", $session['user']['uid'], userProjects, projectId), {
+            name: "Los Angeles",
+            state: "CA",
+            country: "USA"
+            });
+    }
+
     function OnSubmit(e){
 
         currQueryResults = new Set()
@@ -102,13 +120,7 @@
 <div class="container">
     <div class="toolbar-left-container">
         <div class="toolbar-left">
-            <div class="toolbar-button" id="new-toolbar-button" on:click={() => {}}>
-                New
-            </div>
-            <div class="toolbar-button" id="open-toolbar-button" on:click={() => {}}>
-                Open
-            </div>
-            <a class="toolbar-button" id="save-toolbar-button">
+            <a class="toolbar-button" id="save-toolbar-button" on:click={() => {saveProject($mainList)}}>
                 Save
             </a>
         </div>

@@ -42,11 +42,11 @@ onMount(async () => {
 
     function getProject(project){
         let newList = {}
-        newList['stories'] = new Set(project['projectData']['projectStories'])
+        newList['stories'] = project['projectData']['projectStories']
         
         project['projectData']['projectItems'].forEach(element => {
             let currItem = {}
-            currItem['content'] = new Set(element['content'])
+            currItem['content'] = element['content']
             currItem['id'] = element['id']
             currItem['title'] = element['title']
             currItem['type'] = element['type']

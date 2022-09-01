@@ -11,56 +11,59 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList[currId] = {id:currId, type:'column', title:'New column', content:new Set(), type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000)}
-        $mainList[myId]['content'].add(currId)
-        mainList.update(v => $mainList)
-        console.log($mainList[myId]['content'])
-        
-        console.log(Object.values($mainList))
-        console.log($mainList['stories'])
+        $mainList[currId] = {id:currId, type:'column', title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000)}
+        $mainList[myId]['content'].push(currId)
+        mainList.set($mainList)
         console.log($mainList)
     }
 
     function addNote(){
         let currId = uuidv4()
         $mainList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000)}
-        $mainList[myId]['content'].add(currId)
-        mainList.update(v => $mainList)
-        console.log(Object.values($mainList))
+        $mainList[myId]['content'].push(currId)
+        mainList.set($mainList)
+        console.log($mainList)
     }
 
     function removeItem(itemId){
         console.log(itemId)
-        console.log($mainList[itemId]['type'])
+        console.log('hello')
         if($mainList[itemId]['type'] === 'column'){
-            let items = Array.from($mainList[itemId]['content'])
+            let items = $mainList[itemId]['content']
             console.log(items)
             for(let i = 0; i < items.length; i++){
+                console.log(items)
                 if($mainList[items[i]] !== undefined){
                     removeItem($mainList[items[i]]['id'])
                 }
-                $mainList[itemId]['content'].delete(items[i])
-                mainList.update(v => $mainList)
+
+                $mainList[itemId]['content'].splice($mainList[itemId]['content'].findIndex((e) => {
+                    return e == items[i]
+                }), 1)
+                mainList.set($mainList)
             }
         }
         delete $mainList[itemId]
-        console.log()
-        if($mainList['stories'].has(itemId)){
-            $mainList['stories'].delete(itemId)
+        if($mainList['stories'].includes(itemId)){
+            $mainList['stories'].splice($mainList['stories'].findIndex((e) => {
+                return e == itemId
+            }), 1)
         }
-        mainList.update(v => $mainList)
+        mainList.set($mainList)
         console.log($mainList['stories'])
     }
 
     function removeStaleId(id){
-        $mainList[myId]['content'].delete(id)
+        $mainList[myId]['content'].splice($mainList[myId]['content'].findIndex((e) => {
+            return e == id
+        }), 1)
         return ''
     }
 
     function toStatus(status){
         $mainList[myId]['status'] = status
         console.log($mainList[myId]['status'])
-        mainList.update(v => $mainList)
+        mainList.set($mainList)
     }
 
     function collapseContent(){

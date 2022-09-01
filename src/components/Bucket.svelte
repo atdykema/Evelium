@@ -18,19 +18,21 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList[currId] = {id:currId, title:'New column', content:[], type:'column'}
-        $mainList['stories'].push(currId)
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column'}
+        $mainList['projectData']['projectItems']['stories'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
-        console.log($mainList['stories'])
+        console.log($mainList['projectData']['projectItems']['stories'])
     }
 
     function removeStaleId(id){
-        $mainList['stories'].splice($mainList['stories'].findIndex((e) => {
+        $mainList['projectData']['projectStories'].splice($mainList['projectData']['projectStories'].findIndex((e) => {
             return e == id
         }), 1)
         return ''
     }
+
+    console.log($mainList)
 
 
 </script>
@@ -39,9 +41,10 @@
 
 <div class="main-canvas-container">
     <div class="main-canvas">
-        {#each $mainList['stories'] as id}
-            {#if $mainList[id] !== undefined}
-                <svelte:component this={Item} myId={$mainList[id]['id']}/>
+        
+        {#each $mainList['projectData']['projectItems']['stories'] as id}
+            {#if $mainList['projectData']['projectItems'][id] !== undefined}
+                <svelte:component this={Item} myId={$mainList['projectData']['projectItems'][id]['id']}/>
             {:else}
                 {removeStaleId(id)}
             {/if}

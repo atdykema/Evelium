@@ -41,10 +41,9 @@ onMount(async () => {
     }
 
     function getProject(project){
-        let newList = {}
-        newList['stories'] = project['projectData']['projectStories']
-        
-        project['projectData']['projectItems'].forEach(element => {
+        project['projectData']['projectItems']['stories'] = project['projectData']['projectStories']
+        /*
+        project['projectData']['projectItemsTest'].forEach(element => {
             let currItem = {}
             currItem['content'] = element['content']
             currItem['id'] = element['id']
@@ -52,8 +51,9 @@ onMount(async () => {
             currItem['type'] = element['type']
             newList[currItem['id']] = currItem
         });
-        console.log(newList)
-        return newList
+        */
+        console.log(project['projectData']['projectItems'])
+        return project
     }
 
 
@@ -92,7 +92,7 @@ onMount(async () => {
     </div>
 </div>
 {:else}
-    <Workspace paramList={getProject(currProject)} projectId={currProject['projectId']}></Workspace>
+    <Workspace paramList={getProject(currProject)}></Workspace>
 {/if}
 
 

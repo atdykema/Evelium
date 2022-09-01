@@ -4,13 +4,16 @@
     import {onMount} from 'svelte'
     import {mainList, session} from '../infoStores'
     import {db} from '../firebase'
-    export let paramList, projectId
+    import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
+    export let paramList
 
     mainList.set(paramList)
 
     console.log($mainList)
 
     let currQueryResults = new Set()
+
+    let loading = false
 
     let toolsCollapse = 'width 25vw; display: flex;'
 
@@ -22,47 +25,25 @@
         }
     }
 
-    function retrieveItemList(property, value, itemsToSearch = $mainList['stories']){
-        let temp = itemsToSearch
-        itemsToSearch = []
-        console.log(temp)
-        for (var it = temp.values(), val= null; val=it.next().value; ) {
-            console.log(val);
-            itemsToSearch.push(val)
-        }
+    function retrieveItemList(property, value, itemsToSearch = $mainList['projectData']['projectItems']['stories']){
 
         console.log(itemsToSearch)
         itemsToSearch.forEach(itemId => {
-            console.log($mainList[itemId]['type'])
-            if($mainList[itemId]['type'] === 'note'){
-                /*
-                console.log(property)
-                console.log($mainList[itemId])
-                console.log($mainList[itemId][property])
-                console.log($mainList[itemId][property], value)
-                */
-                if($mainList[itemId][property] === value){
+            console.log($mainList['projectData']['projectItems'][itemId]['type'])
+            if($mainList['projectData']['projectItems'][itemId]['type'] === 'note'){
+                if($mainList['projectData']['projectItems'][itemId][property] === value){
                     currQueryResults.add(itemId)
                     currQueryResults = currQueryResults
                     console.log('hello', currQueryResults)
                 }
             }else{
-                let items = $mainList[itemId]['content']
-                console.log(items)
-
-                
-                let temp1 = items
-                items = []
-                for (var it = temp1.values(), val= null; val=it.next().value; ) {
-                    console.log(val);
-                    items.push(val)
-                }
+                let items = $mainList['projectData']['projectItems'][itemId]['content']
                 
 
                 for(let i = 0; i < items.length; i++){
-                    console.log($mainList[items[i]])
-                    if($mainList[items[i]] !== undefined){
-                        retrieveItemList(property, value, $mainList[itemId]['content'])
+                    console.log($mainList['projectData']['projectItems'][items[i]])
+                    if($mainList['projectData']['projectItems'][items[i]] !== undefined){
+                        retrieveItemList(property, value, $mainList['projectData']['projectItems'][itemId]['content'])
                         
                     }
                 }
@@ -72,20 +53,13 @@
     }
 
     async function saveProject(list){
-        console.log(list['stories'])
-        temp = Array.from(list['stories'])
-        delete list['stories']
-        console.log(temp)
-        /*
-        Object.keys(list).forEach((item) => {
-            list[item]['']
-        })
-        */
-        await setDoc(doc(db, "users", $session['user']['uid'], userProjects, projectId), {
-            name: "Los Angeles",
-            state: "CA",
-            country: "USA"
-            });
+        loading = true
+        await setDoc(doc(db, "users", $session['user']['uid'], "userProjects", paramList['projectId']), {
+            projectData: {projectItems: list['projectData']['projectItems'], projectStories: list['projectData']['projectItems']['stories']},
+            projectName: paramList['projectName'],
+            projectId: paramList['projectId']
+        });
+        loading = false
     }
 
     function OnSubmit(e){
@@ -117,61 +91,66 @@
 </script>
 <svelte:head></svelte:head>
 <div class="wrapper">
-<div class="container">
-    <div class="toolbar-left-container">
-        <div class="toolbar-left">
-            <a class="toolbar-button" id="save-toolbar-button" on:click={() => {saveProject($mainList)}}>
-                Save
-            </a>
-        </div>
-    </div>
-    <div class="bucket-container">
-        <Bucket></Bucket>
-    </div>
-    <div class="tools-container">
-        <div class="collapse-tools-button" on:click={collapseTools}>
-            {#if toolsCollapse === 'width: 0px; display: none;'}
-                +--
-            {:else}
-                --+
-            {/if}
-        </div>
-        <div class="main-tools-container" collapse={toolsCollapse} style="{toolsCollapse}">
-            <div class="search-tool-container">
-                <div class="search-input">
-                    <div class="container-title">New query</div>
-                    <form on:submit|preventDefault={OnSubmit}>
-                        <div>
-                            <label for="query">Property</label>
-                            <input
-                                type="text"
-                                id="query-property"
-                                name="query-property"
-                                value=""
-                            />
-                        </div>
-                        <div>
-                            <label for="query">Value</label>
-                            <input
-                                type="text"
-                                id="query-value"
-                                name="query-value"
-                                value=""
-                            />
-                        </div>
-                        <button type="submit">Query</button>
-                    </form>
-                </div>
-                <div class="search-output">
-                    {#key currQueryResults}
-                        <Results results={currQueryResults}></Results>
-                    {/key}
-                </div>
+    {#if loading}
+    <div>Loading</div>
+    {:else}
+    <div class="container">
+        <div class="toolbar-left-container">
+            <div class="toolbar-left">
+                <a class="toolbar-button" id="save-toolbar-button" on:click={() => {saveProject($mainList)}}>
+                    Save
+                </a>
             </div>
         </div>
-    
+        <div class="bucket-container">
+            <Bucket></Bucket>
+        </div>
+        <div class="tools-container">
+            <div class="collapse-tools-button" on:click={collapseTools}>
+                {#if toolsCollapse === 'width: 0px; display: none;'}
+                    +--
+                {:else}
+                    --+
+                {/if}
+            </div>
+            <div class="main-tools-container" collapse={toolsCollapse} style="{toolsCollapse}">
+                <div class="search-tool-container">
+                    <div class="search-input">
+                        <div class="container-title">New query</div>
+                        <form on:submit|preventDefault={OnSubmit}>
+                            <div>
+                                <label for="query">Property</label>
+                                <input
+                                    type="text"
+                                    id="query-property"
+                                    name="query-property"
+                                    value=""
+                                />
+                            </div>
+                            <div>
+                                <label for="query">Value</label>
+                                <input
+                                    type="text"
+                                    id="query-value"
+                                    name="query-value"
+                                    value=""
+                                />
+                            </div>
+                            <button type="submit">Query</button>
+                        </form>
+                    </div>
+                    <div class="search-output">
+                        {#key currQueryResults}
+                            <Results results={currQueryResults}></Results>
+                        {/key}
+                    </div>
+                    
+                </div>
+            </div>
+        
+        </div>
     </div>
-</div>
+{/if}
 </div>
 
 <style>

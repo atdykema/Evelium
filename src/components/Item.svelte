@@ -11,16 +11,16 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList[currId] = {id:currId, type:'column', title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000)}
-        $mainList[myId]['content'].push(currId)
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'column', title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000)}
+        $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
     }
 
     function addNote(){
         let currId = uuidv4()
-        $mainList[currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000)}
-        $mainList[myId]['content'].push(currId)
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000)}
+        $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
     }
@@ -28,41 +28,41 @@
     function removeItem(itemId){
         console.log(itemId)
         console.log('hello')
-        if($mainList[itemId]['type'] === 'column'){
-            let items = $mainList[itemId]['content']
+        if($mainList['projectData']['projectItems'][itemId]['type'] === 'column'){
+            let items = $mainList['projectData']['projectItems'][itemId]['content']
             console.log(items)
             for(let i = 0; i < items.length; i++){
                 console.log(items)
-                if($mainList[items[i]] !== undefined){
-                    removeItem($mainList[items[i]]['id'])
+                if($mainList['projectData']['projectItems'][items[i]] !== undefined){
+                    removeItem($mainList['projectData']['projectItems'][items[i]]['id'])
                 }
 
-                $mainList[itemId]['content'].splice($mainList[itemId]['content'].findIndex((e) => {
+                $mainList['projectData']['projectItems'][itemId]['content'].splice($mainList['projectData']['projectItems'][itemId]['content'].findIndex((e) => {
                     return e == items[i]
                 }), 1)
                 mainList.set($mainList)
             }
         }
-        delete $mainList[itemId]
-        if($mainList['stories'].includes(itemId)){
-            $mainList['stories'].splice($mainList['stories'].findIndex((e) => {
+        delete $mainList['projectData']['projectItems'][itemId]
+        if($mainList['projectData']['projectItems']['stories'].includes(itemId)){
+            $mainList['projectData']['projectItems']['stories'].splice($mainList['projectData']['projectItems']['stories'].findIndex((e) => {
                 return e == itemId
             }), 1)
         }
         mainList.set($mainList)
-        console.log($mainList['stories'])
+        console.log($mainList['projectData']['projectItems']['stories'])
     }
 
     function removeStaleId(id){
-        $mainList[myId]['content'].splice($mainList[myId]['content'].findIndex((e) => {
+        $mainList['projectData']['projectItems'][myId]['content'].splice($mainList['projectData']['projectItems'][myId]['content'].findIndex((e) => {
             return e == id
         }), 1)
         return ''
     }
 
     function toStatus(status){
-        $mainList[myId]['status'] = status
-        console.log($mainList[myId]['status'])
+        $mainList['projectData']['projectItems'][myId]['status'] = status
+        console.log($mainList['projectData']['projectItems'][myId]['status'])
         mainList.set($mainList)
     }
 
@@ -80,7 +80,7 @@
 
 
 
-<div class="container {$mainList[myId]['type']}" id="{$mainList[myId]['id']}" guid={$mainList[myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList[myId]['status']}">
+<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']}">
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>
@@ -95,27 +95,27 @@
             </div>
         </div>
         <div contenteditable class="item-title">
-            {$mainList[myId]['title']}
+            {$mainList['projectData']['projectItems'][myId]['title']}
         </div>
-        {#if $mainList[myId]['type'] === 'column'}
+        {#if $mainList['projectData']['projectItems'][myId]['type'] === 'column'}
             <div class="item-content" style="{contentCollapsed}">
-                {#each Array.from($mainList[myId]['content']) as id}
-                    {#if $mainList[id] !== undefined}
-                        <svelte:component this={Item} myId={$mainList[id]['id']}/>
+                {#each Array.from($mainList['projectData']['projectItems'][myId]['content']) as id}
+                    {#if $mainList['projectData']['projectItems'][id] !== undefined}
+                        <svelte:component this={Item} myId={$mainList['projectData']['projectItems'][id]['id']}/>
                     {:else}
                         {removeStaleId(id)}
                     {/if}
                 {/each}
             </div>
-        {:else if $mainList[myId]['type'] === 'note'}
+        {:else if $mainList['projectData']['projectItems'][myId]['type'] === 'note'}
             <div class="item-content" style="{contentCollapsed}">
                 <div contenteditable class="text-content">
-                    {$mainList[myId]['content']}
+                    {$mainList['projectData']['projectItems'][myId]['content']}
                 </div>
             </div>
         {/if}
 
-        {#if $mainList[myId]['type'] === 'column'}
+        {#if $mainList['projectData']['projectItems'][myId]['type'] === 'column'}
             <div class="item-nav" id="item-add-nav">
                 <div class="add-item-button" id="add-note-button" on:click={addNote}>
                     Note
@@ -125,7 +125,7 @@
                 </div>
             </div>
 
-        {:else if $mainList[myId]['type'] === 'note'}
+        {:else if $mainList['projectData']['projectItems'][myId]['type'] === 'note'}
             <div class="item-nav" id="item-status-nav">
                 <div class="status-item-button" on:click={() => toStatus('background-color: lightgreen;')}>
                     Done

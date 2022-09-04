@@ -153,10 +153,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: auto 1rem auto 1rem;
-        min-width: fit-content;
+        margin: auto 0.5rem auto 0.5rem;
+        min-width: max-content;
+        width: fit-content;
         overflow: hidden;
-
 
     }
 
@@ -177,14 +177,13 @@
     }
 
     .column{
-        border: rgba(0, 0, 0, .5) dashed 5px;
-        margin: 1rem;
+        
+        
     }
 
     .note{
         text-align: center;
-        border: black solid 1px;
-        margin: 1rem;
+        border: black dotted 1px;
     }
 
     .note:hover > .top-item-nav{
@@ -197,7 +196,7 @@
 
     .item-content{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
         min-width: 100%;
@@ -251,10 +250,10 @@
         justify-content: space-between;
         align-items: center;
         padding: .5rem;
+        width: 80%;
         opacity: 0%;
         font-size: 2rem;
         z-index: 98;
-        width: 80%;
     }
 
     .top-item-nav:hover{

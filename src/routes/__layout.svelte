@@ -87,7 +87,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 5vh 5vh 5vh 5vh;
         position: fixed;
         opacity: 0%;
         transition: 1s;
@@ -100,6 +99,7 @@
         opacity: 100%;
         height: 3vh;
         transition: .25s;
+        padding: 5vh 5vh 5vh 5vh;
         
     }
 

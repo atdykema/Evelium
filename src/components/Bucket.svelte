@@ -12,13 +12,14 @@
 
     import { v4 as uuidv4 } from 'uuid';
     import Item from "../components/Item.svelte";
+    import StoryItem from './StoryItem.svelte';
     import { mainList } from '../infoStores.js'
     
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column'}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000), isDragged: false}
         $mainList['projectData']['projectItems']['stories'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -44,7 +45,7 @@
         
         {#each $mainList['projectData']['projectItems']['stories'] as id}
             {#if $mainList['projectData']['projectItems'][id] !== undefined}
-                <svelte:component this={Item} myId={$mainList['projectData']['projectItems'][id]['id']}/>
+                <StoryItem myId={$mainList['projectData']['projectItems'][id]['id']}></StoryItem>
             {:else}
                 {removeStaleId(id)}
             {/if}

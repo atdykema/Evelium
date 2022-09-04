@@ -1,15 +1,17 @@
 <script>
-import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import {db} from "../firebase"
 import {session} from "../infoStores"
 import {onMount} from 'svelte'
 import {googleLogin} from "../firebase"
 import Workspace from '../components/Workspace.svelte'
+import Card from "../components/Card.svelte";
 
 
 let isMounted = 0;
 let projects = [];
 let currProject = null
+let loading = false
 
 
 onMount(async () => {
@@ -29,6 +31,7 @@ onMount(async () => {
     })
 
     async function getProjects(){
+        projects = []
         let userRef = doc(db, 'users', $session['user']['uid'])
         console.log($session['user']['uid'])
         let temp = collection(userRef, 'userProjects')
@@ -38,6 +41,18 @@ onMount(async () => {
             console.log(doc.id, " => ", doc.data());
             projects.push(doc.data())
         });
+    }
+
+    async function createNewProject(){
+        loading = true
+        let newId = crypto.randomUUID()
+        await setDoc(doc(db, 'users', $session['user']['uid'], 'userProjects', newId),{
+            projectData: {projectItems: {}, projectStories: []},
+            projectName: crypto.randomUUID(), //create way to set name
+            projectId: newId
+        })
+        await getProjects()
+        loading = false
     }
 
     function getProject(project){
@@ -56,6 +71,13 @@ onMount(async () => {
         return project
     }
 
+    async function deleteProject(project){
+        loading = true
+        await deleteDoc(doc(db, "users", $session['user']['uid'], "userProjects", project['projectId']));
+        await getProjects()
+        loading = false
+    }
+
 
     
 </script>
@@ -69,20 +91,27 @@ onMount(async () => {
         </div>
         <div class="content-title">Projects</div>
         <div class="project-list">
-            {#if isMounted}
+            {#if isMounted && !loading}
                 {#each projects as project}
-                    <div class="project-item" on:click={() => {
-                        currProject = project;
-                    }}>
-                        {project['projectName']}
-                        {#if currProject != null}
-                            {currProject.data()}
-                        {/if}
-                    </div>
+                <div class="project-item" on:click={() => {
+                    currProject = project;
+                }}>
+                    {project['projectName']}
+                    {#if currProject != null}
+                        {currProject.data()}
+                    {/if}
+                    <div class="project-delete-button" on:click={deleteProject(project)}>X</div>
+                </div>
                 {/each}
+                <div class="new-project-button" on:click={() =>
+                    createNewProject()
+                }>
+                    create new project
+                </div>
             {:else}
                 Loading
             {/if}
+
         </div>
     {:else if isMounted == 2}
         <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
@@ -114,10 +143,10 @@ onMount(async () => {
     .main-container{
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
+        overflow-y: scroll;
         
     }
 
@@ -141,9 +170,33 @@ onMount(async () => {
         border: 1px solid red;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        overflow-y: scroll;
+
+
+    }
+
+    .project-item{
+        display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        border: black 1px solid;
+        margin: .5rem;
+        padding: .5rem;
+        font-size: 3rem;
+    }
 
+    .new-project-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: black 1px solid;
+        margin: .5rem;
+        padding: .5rem;
+        font-size: 3rem;
+        color: red  ;
     }
 
     .google-login-button{

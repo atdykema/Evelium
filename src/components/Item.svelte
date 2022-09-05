@@ -94,7 +94,7 @@
                 X
             </div>
         </div>
-        <textarea class="item-title"  bind:value={$mainList['projectData']['projectItems'][myId]['title']} rows=2></textarea>
+        <div class="item-title item-editable" contenteditable bind:textContent={$mainList['projectData']['projectItems'][myId]['title']}></div>
         {#if $mainList['projectData']['projectItems'][myId]['type'] === 'column'}
             <div class="item-content" style="{contentCollapsed}">
                 {#each Array.from($mainList['projectData']['projectItems'][myId]['content']) as id}
@@ -106,8 +106,8 @@
                 {/each}
             </div>
         {:else if $mainList['projectData']['projectItems'][myId]['type'] === 'note'}
-            <div class="item-content" style="{contentCollapsed}">
-                <textarea class="text-content" bind:value={$mainList['projectData']['projectItems'][myId]['content']} rows=2></textarea>
+            <div class="item-content item-editable" style="{contentCollapsed}">
+                <div class="text-content" contenteditable bind:textContent={$mainList['projectData']['projectItems'][myId]['content']}></div>
             </div>
         {/if}
 
@@ -156,16 +156,14 @@
         margin: auto 1rem auto 1rem;
         min-width: fit-content;
         overflow: hidden;
+        width: 90%;
 
 
     }
 
-    textarea{
-        resize: none;
-        background: none;
-        appearance: none;
-        border: none;
-        text-align: center;
+    .item-editable{
+        max-width: 30vw;
+        width: 90%;
     }
 
     .item-properties{
@@ -215,7 +213,7 @@
         background-color: rgba(0, 0, 0, 0);
         border: none;
         overflow-wrap: anywhere;
-        width: 90%;
+        font: bold;
     }
 
     .text-content{
@@ -225,7 +223,6 @@
         text-align: center;
         background-color: rgba(0, 0, 0, 0);
         border: none;
-        width: 90%;
     }
 
     .item-nav{

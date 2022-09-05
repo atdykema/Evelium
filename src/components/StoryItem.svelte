@@ -3,9 +3,8 @@
     export let myId
     import Item from "../components/Item.svelte";
     import { mainList } from '../infoStores.js'
-
     import { scrollIntoView } from '../components/Bucket.svelte'
-    
+
     let contentCollapsed = 'auto';
 
     function addColumn(){
@@ -94,7 +93,7 @@
                 X
             </div>
         </div>
-        <textarea class="item-title"  bind:value={$mainList['projectData']['projectItems'][myId]['title']} rows=2></textarea>
+        <div class="item-title item-editable" contenteditable bind:textContent={$mainList['projectData']['projectItems'][myId]['title']}></div>
         {#if $mainList['projectData']['projectItems'][myId]['type'] === 'column'}
             <div class="item-content" style="{contentCollapsed}">
                 {#each Array.from($mainList['projectData']['projectItems'][myId]['content']) as id}
@@ -107,7 +106,7 @@
             </div>
         {:else if $mainList['projectData']['projectItems'][myId]['type'] === 'note'}
             <div class="item-content" style="{contentCollapsed}">
-                <textarea class="text-content" bind:value={$mainList['projectData']['projectItems'][myId]['content']} rows=2></textarea>
+                <div class="text-content" contenteditable bind:textContent={$mainList['projectData']['projectItems'][myId]['content']}></div>
             </div>
         {/if}
 
@@ -135,7 +134,6 @@
             </div>
         {/if}
     </div>
-
 </div>
 
 
@@ -158,14 +156,6 @@
         width: fit-content;
         overflow: hidden;
 
-    }
-
-    textarea{
-        resize: none;
-        background: none;
-        appearance: none;
-        border: none;
-        text-align: center;
     }
 
     .item-properties{
@@ -214,7 +204,9 @@
         background-color: rgba(0, 0, 0, 0);
         border: none;
         overflow-wrap: anywhere;
-        width: 90%;
+        width: 50%;
+        font-size: 50px;
+        
     }
 
     .text-content{
@@ -224,7 +216,7 @@
         text-align: center;
         background-color: rgba(0, 0, 0, 0);
         border: none;
-        width: 90%;
+        width: 25vw;
     }
 
     .item-nav{

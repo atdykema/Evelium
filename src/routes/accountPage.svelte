@@ -92,6 +92,11 @@ onMount(async () => {
         <div class="content-title">Projects</div>
         <div class="project-list">
             {#if isMounted && !loading}
+                <div class="new-project-button" on:click={() =>
+                    createNewProject()
+                }>
+                    create new project
+                </div>
                 {#each projects as project}
                 <div class="project-item" on:click={() => {
                     currProject = project;
@@ -103,11 +108,6 @@ onMount(async () => {
                     <div class="project-delete-button" on:click={deleteProject(project)}>X</div>
                 </div>
                 {/each}
-                <div class="new-project-button" on:click={() =>
-                    createNewProject()
-                }>
-                    create new project
-                </div>
             {:else}
                 Loading
             {/if}

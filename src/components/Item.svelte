@@ -6,12 +6,14 @@
 
     import { scrollIntoView } from '../components/Bucket.svelte'
     
-    let contentCollapsed = 'auto';
+    let contentCollapsed = 'auto;';
+
+    let dropdown_attrs = 'height: 0px; opacity: 0%;'
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, creationDate: Math.floor(new Date()/ 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -19,7 +21,7 @@
 
     function addNote(){
         let currId = uuidv4()
-        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status: 0, assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -60,12 +62,6 @@
         return ''
     }
 
-    function toStatus(status){
-        $mainList['projectData']['projectItems'][myId]['status'] = status
-        console.log($mainList['projectData']['projectItems'][myId]['status'])
-        mainList.set($mainList)
-    }
-
     function collapseContent(){
         if(contentCollapsed == 'height: 0px; opacity: 0%;'){
             contentCollapsed = 'height: auto; opacity: 100%;'
@@ -75,6 +71,18 @@
         console.log(contentCollapsed)
     }
 
+    function expandItemDropdown(){
+        if( dropdown_attrs == 'height: 0px; opacity: 0%;'){
+            dropdown_attrs = 'height: auto; opacity: 100%;'
+        }else{
+            dropdown_attrs = 'height: 0px; opacity: 0%;'
+        }
+        console.log( dropdown_attrs)
+    }
+
+    function onSelectChange(prop, value){
+        $mainList['projectData']['projectItems'][myId][prop] = value
+    }
 
 </script>
 
@@ -120,20 +128,31 @@
                     Column
                 </div>
             </div>
-
-        {:else if $mainList['projectData']['projectItems'][myId]['type'] === 'note'}
-            <div class="item-nav" id="item-status-nav">
-                <div class="status-item-button" on:click={() => toStatus('background-color: lightgreen;')}>
-                    Done
-                </div>
-                <div class="status-item-button" on:click={() => toStatus('background-color: yellow;')}>
-                    working
-                </div>
-                <div class="status-item-button" on:click={() => toStatus('background-color: lightgray;')}>
-                    UnAs
-                </div>
-            </div>
         {/if}
+
+        <div class="item-dropdown-button" on:click={expandItemDropdown}>V</div>
+        <div class="item-dropdown-content" style="{dropdown_attrs}">
+            <div class="item-dropdown-entry">
+                <div>Status:</div>
+                <form>
+                    <label>Done
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: lightgreen;")} type="radio" name="status" value="background-color: lightgreen;">
+                    </label>
+                    <label>Working
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: yellow;")} type="radio" name="status" value="background-color: yellow;">
+                    </label>
+                    <label>Unassigned
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: white;")} type="radio" name="status" value="background-color: white;">
+                    </label>
+                </form>
+            </div>
+            <div class="item-dropdown-entry">
+                    creationDate: {$mainList['projectData']['projectItems'][myId]['creationDate']}
+            </div>
+            <div class="item-dropdown-entry">
+                    assignedDate: {$mainList['projectData']['projectItems'][myId]['assignedDate']}
+            </div>
+        </div>
     </div>
 
 </div>
@@ -223,6 +242,8 @@
         text-align: center;
         background-color: rgba(0, 0, 0, 0);
         border: none;
+        overflow-wrap: anywhere;
+        max-width: 90%;
     }
 
     .item-nav{
@@ -261,5 +282,21 @@
     .item-nav:hover{
         opacity: 75%;
     }
+
+    .item-dropdown-button{
+        height: 20px;
+        opacity: 0%;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .item-dropdown-button:hover{
+        opacity: 100%;
+    }
+
+
 
 </style>

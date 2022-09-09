@@ -172,6 +172,8 @@ onMount(async () => {
         flex-direction: column;
         align-items: center;
         overflow-y: scroll;
+        height: fit-content;
+        padding: 0;
 
 
     }
@@ -185,7 +187,11 @@ onMount(async () => {
         margin: .5rem;
         padding: .5rem;
         font-size: 3rem;
+        transition: 1s;
+        height: fit-content;
+        overflow-y: hidden;
     }
+
 
     .new-project-button{
         display: flex;

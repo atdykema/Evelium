@@ -10,7 +10,7 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, creationDate: Math.floor(new Date()/ 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -18,7 +18,7 @@
 
     function addNote(){
         let currId = uuidv4()
-        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: new Date(), creationDate: Math.floor(new Date() / 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -66,10 +66,10 @@
     }
 
     function collapseContent(){
-        if(contentCollapsed == 'height: 0px; opacity: 0%;'){
-            contentCollapsed = 'height: auto; opacity: 100%;'
+        if(contentCollapsed == 'height: 0px; opacity: 0%; width: 40vw;'){
+            contentCollapsed = 'height: auto; opacity: 100%; width: auto;'
         }else{
-            contentCollapsed = 'height: 0px; opacity: 0%;'
+            contentCollapsed = 'height: 0px; opacity: 0%; width: 40vw;'
         }
         console.log(contentCollapsed)
     }
@@ -83,7 +83,7 @@
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>
-                {#if contentCollapsed === 'height: 0px; opacity: 0%;'}
+                {#if contentCollapsed === 'height: 0px; opacity: 0%; width: 40vw;'}
                     &#9650
                 {:else}
                     &#9660
@@ -187,8 +187,8 @@
     .item-content{
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        justify-content: start;
+        align-items: start;
         min-width: 100%;
         margin: .25rem;
         padding: .25rem;

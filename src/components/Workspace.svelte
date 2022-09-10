@@ -2,7 +2,7 @@
     import Bucket from "./bucket.svelte";
     import Results from "./Results.svelte"
     import {onMount} from 'svelte'
-    import {mainList, session} from '../infoStores'
+    import {mainList, session, mouseCoords} from '../infoStores'
     import {db} from '../firebase'
     import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
     export let paramList
@@ -86,6 +86,11 @@
 
 
     }
+
+    function getMouseCoords(event){
+        mouseCoords.set([event.clientX, event.clientY])
+        console.log($mouseCoords)
+    }
     
 
 </script>
@@ -102,7 +107,7 @@
                 </a>
             </div>
         </div>
-        <div class="bucket-container">
+        <div class="bucket-container" on:mousemove={getMouseCoords}>
             <Bucket></Bucket>
         </div>
         <div class="tools-container">

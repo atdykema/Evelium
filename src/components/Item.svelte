@@ -13,7 +13,7 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'column', title:'New column', content:[], status: null, priority: 'none', assignedDate: null, creationDate: Math.floor(new Date()/ 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -21,7 +21,7 @@
 
     function addNote(){
         let currId = uuidv4()
-        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status: 0, assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status: null, priority: 'none', assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -102,6 +102,19 @@
                 X
             </div>
         </div>
+        {#if $mainList['projectData']['projectItems'][myId]['priority'] != "none"}
+            <div class="priority-container">
+                {#if $mainList['projectData']['projectItems'][myId]['priority'] === "high"}
+                    &#10071
+                {:else if $mainList['projectData']['projectItems'][myId]['priority'] === "medium"}
+                    &#9203
+                {:else if $mainList['projectData']['projectItems'][myId]['priority'] === "low"}
+                    &#128164
+                {:else}
+                    unknown priority
+                {/if}
+            </div>
+        {/if}
         <div class="item-title item-editable" contenteditable bind:textContent={$mainList['projectData']['projectItems'][myId]['title']}></div>
         {#if $mainList['projectData']['projectItems'][myId]['type'] === 'column'}
             <div class="item-content" style="{contentCollapsed}">
@@ -147,6 +160,23 @@
                 </form>
             </div>
             <div class="item-dropdown-entry">
+                <div>Priority:</div>
+                <form>
+                    <label>High
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['priority']} on:change={() => onSelectChange('priority', "high")} type="radio" name="status" value='high'>
+                    </label>
+                    <label>Medium
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['priority']} on:change={() => onSelectChange('priority', "medium")} type="radio" name="status" value='medium'>
+                    </label>
+                    <label>Low
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['priority']} on:change={() => onSelectChange('priority', "low")} type="radio" name="status" value='low'>
+                    </label>
+                    <label>None
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['priority']} on:change={() => onSelectChange('priority', "none")} type="radio" name="status" value='none'>
+                    </label>
+                </form>
+            </div>
+            <div class="item-dropdown-entry">
                     creationDate: {$mainList['projectData']['projectItems'][myId]['creationDate']}
             </div>
             <div class="item-dropdown-entry">
@@ -176,7 +206,6 @@
         min-width: fit-content;
         overflow: hidden;
         width: 90%;
-
 
     }
 
@@ -295,6 +324,12 @@
 
     .item-dropdown-button:hover{
         opacity: 100%;
+    }
+
+    .priority-container{
+        font-size: 2rem;
+        padding: .25rem;
+
     }
 
 

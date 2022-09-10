@@ -1,16 +1,15 @@
 <script>
-    import { v4 as uuidv4 } from 'uuid';
     export let myId
     import Item from "../components/Item.svelte";
+    import { v4 as uuidv4 } from 'uuid';
     import { mainList } from '../infoStores.js'
-    import { scrollIntoView } from '../components/Bucket.svelte'
 
     let contentCollapsed = 'auto';
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, priority: 'none', creationDate: Math.floor(new Date()/ 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -18,7 +17,7 @@
 
     function addNote(){
         let currId = uuidv4()
-        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, type:'note', title:'New note', content:'some note text', status:0, priority: 'none', assignedDate: null, creationDate: Math.floor(new Date() / 1000), isDragged: false}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -42,6 +41,7 @@
                 mainList.set($mainList)
             }
         }
+        console.log($mainList['projectData']['projectItems'][itemId])
         delete $mainList['projectData']['projectItems'][itemId]
         if($mainList['projectData']['projectItems']['stories'].includes(itemId)){
             $mainList['projectData']['projectItems']['stories'].splice($mainList['projectData']['projectItems']['stories'].findIndex((e) => {

@@ -9,11 +9,9 @@
 </script>
 
 <script>
-
     import { v4 as uuidv4 } from 'uuid';
-    import Item from "../components/Item.svelte";
     import StoryItem from './StoryItem.svelte';
-    import { mainList } from '../infoStores.js'
+    import { mainList, mouseCoords } from '../infoStores.js'
     
 
     function addColumn(){
@@ -32,8 +30,6 @@
         }), 1)
         return ''
     }
-
-    console.log($mainList)
 
 
 </script>

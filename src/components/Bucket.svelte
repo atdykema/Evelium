@@ -11,13 +11,13 @@
 <script>
     import { v4 as uuidv4 } from 'uuid';
     import StoryItem from './StoryItem.svelte';
-    import { mainList, mouseCoords } from '../infoStores.js'
+    import { mainList} from '../infoStores.js'
     
 
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: new Date(), creationDate: Math.floor(new Date()/ 1000), parent: null, zindex: 0}
         $mainList['projectData']['projectItems']['stories'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -36,7 +36,7 @@
 
 
 
-<div class="main-canvas-container">
+<div class="main-canvas-container" >
     <div class="main-canvas">
         
         {#each $mainList['projectData']['projectItems']['stories'] as id}

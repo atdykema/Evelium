@@ -1,8 +1,7 @@
 <script>
     import Bucket from "./bucket.svelte";
     import Results from "./Results.svelte"
-    import {onMount} from 'svelte'
-    import {mainList, session, mouseCoords} from '../infoStores'
+    import {mainList, session} from '../infoStores'
     import {db} from '../firebase'
     import { collection, doc, getDoc, setDoc, getDocs} from "firebase/firestore";
     export let paramList
@@ -87,10 +86,11 @@
 
     }
 
+    /*
     function getMouseCoords(event){
         mouseCoords.set([event.clientX, event.clientY])
-        console.log($mouseCoords)
     }
+    */
     
 
 </script>
@@ -102,12 +102,12 @@
     <div class="container">
         <div class="toolbar-left-container">
             <div class="toolbar-left">
-                <a class="toolbar-button" id="save-toolbar-button" on:click={() => {saveProject($mainList)}}>
+                <a class="toolbar-button" id="save-toolbar-button" on:click={() => {saveProject($mainList)}} >
                     Save
                 </a>
             </div>
         </div>
-        <div class="bucket-container" on:mousemove={getMouseCoords}>
+        <div class="bucket-container">
             <Bucket></Bucket>
         </div>
         <div class="tools-container">
@@ -154,6 +154,15 @@
             </div>
         
         </div>
+        <!--
+        {#if $draggedItem}
+            <div class="temp-drag-element" style="top: {$mouseCoords[1] - 50}px; left: {$mouseCoords[0] - 50}px; position: fixed; height: 100px; width: 100px; border: solid 10px black; z-index: -1;">
+                {$mouseCoords[1]}
+                {$mouseCoords[0]}
+                {$draggedItem['title']}
+            </div>
+        {/if}
+        -->
     </div>
 {/if}
 </div>

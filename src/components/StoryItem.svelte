@@ -9,7 +9,7 @@
     function addColumn(){
         let currId = uuidv4()
         console.log(currId)
-        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, priority: 'none', creationDate: Math.floor(new Date()/ 1000), isDragged: false}
+        $mainList['projectData']['projectItems'][currId] = {id:currId, title:'New column', content:[], type:'column', assignedDate: null, priority: 'none', creationDate: Math.floor(new Date()/ 1000), parent: myId, zindex: ($mainList['projectData']['projectItems'][myId] + 1)}
         $mainList['projectData']['projectItems'][myId]['content'].push(currId)
         mainList.set($mainList)
         console.log($mainList)
@@ -79,7 +79,7 @@
 
 
 
-<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']}">
+<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" draggable="true" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']} {$mainList['projectData']['projectItems'][myId]['zindex']};">
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>

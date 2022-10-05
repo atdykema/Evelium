@@ -2,9 +2,7 @@
     import { v4 as uuidv4 } from 'uuid';
     export let myId
     import Item from "../components/Item.svelte";
-    import { mainList } from '../infoStores.js'
-
-    import { scrollIntoView } from '../components/Bucket.svelte'
+    import { mainList, draggedItem, inItem} from '../infoStores.js'
     
     let contentCollapsed = 'auto;';
 
@@ -88,7 +86,44 @@
 
 
 
-<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']}">
+<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" draggable="true" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']} {$mainList['projectData']['projectItems'][myId]['zindex']};"
+    on:dragstart={()=>{draggedItem.set($mainList['projectData']['projectItems'][myId]); $draggedItem=$draggedItem; console.log($draggedItem)}}
+    on:dragend={()=>{
+        if($inItem != null){
+            $mainList[$inItem['id']]['content'].push($inItem['id']);
+            $mainList = $mainList
+            console.log($mainList[$inItem['id']]['content'])
+        }
+        draggedItem.set(null);
+        inItem.set(null)
+        }}
+    on:dragenter={()=>{
+        console.log('enter')
+        if($draggedItem != null && $mainList['projectData']['projectItems'][myId]['type'] === 'column' && !$mainList['projectData']['projectItems'][myId]['content'].includes($draggedItem['id']) && myId != $draggedItem['id'] && ($inItem === null || $inItem['zindex'] < $mainList['projectData']['projectItems'][myId]['zindex'])){
+            inItem.set($mainList['projectData']['projectItems'][myId]);
+            console.log($inItem)
+        }
+        /*
+        if($draggedItem != null && $mainList['projectData']['projectItems'][myId]['type'] === 'column' && !$mainList['projectData']['projectItems'][myId]['content'].includes($draggedItem['id']) && myId != $draggedItem['id']){
+            $mainList['projectData']['projectItems'][myId]['content'].push($draggedItem['id']);
+            mainList.set($mainList);
+            $mainList=$mainList;
+        }
+        */
+        }} 
+    on:dragleave={()=>{
+        if($inItem != null && myId === $inItem['id']){
+            inItem.set(null);
+            console.log($inItem)
+        }
+        /*
+        if($draggedItem != null && $mainList['projectData']['projectItems'][myId]['type'] === 'column' && $mainList['projectData']['projectItems'][myId]['content'].includes($draggedItem['id'])){
+            console.log('helllloo', $mainList['projectData']['projectItems'][myId]['content'])
+            $mainList['projectData']['projectItems'][myId]['content'].splice([$mainList['projectData']['projectItems'][myId]['content'].findIndex((e)=>{e === $draggedItem['id']})], 1);
+            mainList.set($mainList);
+            $mainList=$mainList
+        }*/
+    }}>
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>
@@ -231,14 +266,7 @@
         text-align: center;
         border: black solid 1px;
         margin: 1rem;
-    }
-
-    .note:hover > .top-item-nav{
-        opacity: 75%;
-    }
-
-    .note:hover > .item-nav{
-        opacity: 75%;
+        
     }
 
     .item-content{

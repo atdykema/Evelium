@@ -5,7 +5,6 @@ import {session} from "../infoStores"
 import {onMount} from 'svelte'
 import {googleLogin} from "../firebase"
 import Workspace from '../components/Workspace.svelte'
-import Card from "../components/Card.svelte";
 
 
 let isMounted = 0;

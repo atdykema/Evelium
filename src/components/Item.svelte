@@ -5,6 +5,7 @@
     import { mainList } from '../infoStores.js'
 
     import { scrollIntoView } from '../components/Bucket.svelte'
+  import { get } from 'svelte/store';
     
     let contentCollapsed = 'auto;';
 
@@ -84,11 +85,23 @@
         $mainList['projectData']['projectItems'][myId][prop] = value
     }
 
+    function getStatus(value){
+        if(value === "done"){
+            return "background-color: lightgreen;"
+        }
+        else if (value === "working"){
+            return "background-color: yellow;"
+        }
+        else if (value === "unassigned"){
+            return "background-color: white;"
+        }
+    }
+
 </script>
 
 
 
-<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{$mainList['projectData']['projectItems'][myId]['status']}">
+<div class="container {$mainList['projectData']['projectItems'][myId]['type']}" id="{$mainList['projectData']['projectItems'][myId]['id']}" guid={$mainList['projectData']['projectItems'][myId]['id']} contentCollapsed={contentCollapsed} style="{getStatus($mainList['projectData']['projectItems'][myId]['status'])}">
     <div class="item-properties">
         <div class="top-item-nav">
             <div class="collapse-button" on:click={collapseContent}>
@@ -149,13 +162,13 @@
                 <div>Status:</div>
                 <form>
                     <label>Done
-                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: lightgreen;")} type="radio" name="status" value="background-color: lightgreen;">
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "done")} type="radio" name="status" value="done">
                     </label>
                     <label>Working
-                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: yellow;")} type="radio" name="status" value="background-color: yellow;">
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "working")} type="radio" name="status" value="working">
                     </label>
                     <label>Unassigned
-                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "background-color: white;")} type="radio" name="status" value="background-color: white;">
+                        <input bind:group={$mainList['projectData']['projectItems'][myId]['status']} on:change={() => onSelectChange('status', "unassigned")} type="radio" name="status" value="unassigned">
                     </label>
                 </form>
             </div>
@@ -177,10 +190,11 @@
                 </form>
             </div>
             <div class="item-dropdown-entry">
-                    creationDate: {$mainList['projectData']['projectItems'][myId]['creationDate']}
+                assignedDate: {$mainList['projectData']['projectItems'][myId]['assignedDate']}
+
             </div>
             <div class="item-dropdown-entry">
-                    assignedDate: {$mainList['projectData']['projectItems'][myId]['assignedDate']}
+                    creationDate: {$mainList['projectData']['projectItems'][myId]['creationDate']}
             </div>
         </div>
     </div>

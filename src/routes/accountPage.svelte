@@ -113,6 +113,7 @@ onMount(async () => {
             {/if}
 
         </div>
+        
     {:else if isMounted == 2}
         <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
     {:else}

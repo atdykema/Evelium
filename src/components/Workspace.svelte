@@ -34,9 +34,12 @@
                 if($mainList['projectData']['projectItems'][itemId][property] === value){
                     currQueryResults.add(itemId)
                     currQueryResults = currQueryResults
-                    console.log('hello', currQueryResults)
                 }
             }else{
+                if($mainList['projectData']['projectItems'][itemId][property] === value){
+                    currQueryResults.add(itemId)
+                    currQueryResults = currQueryResults
+                }
                 let items = $mainList['projectData']['projectItems'][itemId]['content']
                 
 

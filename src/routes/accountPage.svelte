@@ -10,6 +10,7 @@ import Card from "../components/Card.svelte";
 
 let isMounted = 0;
 let projects = [];
+let connectedUsers = [];
 let currProject = null
 let loading = false
 
@@ -19,6 +20,7 @@ onMount(async () => {
         if($session['user'] != null){
             try {
                 await getProjects()
+                await getConnectedUsers()
                 isMounted = 1
                 
             }catch(error) {
@@ -30,9 +32,10 @@ onMount(async () => {
         
     })
 
-    async function getProjects(){
+    async function getProjects(user = $session['user']['uid']){
         projects = []
-        let userRef = doc(db, 'users', $session['user']['uid'])
+        let userRef = doc(db, 'users', user)
+        console.log(user)
         console.log($session['user']['uid'])
         let temp = collection(userRef, 'userProjects')
         let collSnap = await getDocs(temp)
@@ -41,6 +44,12 @@ onMount(async () => {
             console.log(doc.id, " => ", doc.data());
             projects.push(doc.data())
         });
+        console.log(projects)
+    }
+
+    async function getConnectedUsers(){
+        let temp = await getDoc(doc(db, 'users', $session['user']['uid']));
+        connectedUsers = temp.data().accessKeys
     }
 
     async function createNewProject(){
@@ -75,6 +84,12 @@ onMount(async () => {
         loading = true
         await deleteDoc(doc(db, "users", $session['user']['uid'], "userProjects", project['projectId']));
         await getProjects()
+        loading = false
+    }
+
+    async function getConnectedProject(user){
+        loading = true
+        await getProjects(user)
         loading = false
     }
 
@@ -113,7 +128,28 @@ onMount(async () => {
             {/if}
 
         </div>
-        
+        <div class="content-title">Your connected users</div>
+        <div class="project-list">
+            {#if isMounted && !loading}
+                {#each connectedUsers as user}
+                <div class="project-item" on:click={() => {
+                    getConnectedProject(user)
+                }}>
+                    {user}
+                </div>
+                {/each}
+                <div class="project-item" on:click={() => {
+                    getConnectedProject($session['user']['uid'])
+                }}>
+                    {$session['user']['uid']} (You)
+                </div>
+                
+                
+            {:else}
+                Loading
+            {/if}
+
+        </div>
     {:else if isMounted == 2}
         <div class="google-login-button" on:click={googleLogin}>Signin with Google</div>
     {:else}
